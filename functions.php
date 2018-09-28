@@ -284,7 +284,7 @@ function akina_scripts() {
 	$movies = akina_option('focus_amv') ? array('url' => akina_option('amv_url'), 'name' => akina_option('amv_title'), 'live' => $mv_live) : 'close';
 	$auto_height = akina_option('focus_height') ? 'fixed' : 'auto';
 	$code_lamp = akina_option('open_prism_codelamp') ? 'open' : 'close';
-	if(wp_is_mobile()) $auto_height = 'fixed'; //拦截移动端
+	// if(wp_is_mobile()) $auto_height = 'fixed'; //拦截移动端
 	wp_localize_script( 'app', 'Poi' , array(
 		'pjax' => akina_option('poi_pjax'),
 		'movies' => $movies,
@@ -426,12 +426,14 @@ function specs_zan(){
  * 友情链接
  */
 function get_the_link_items($id = null){
+  $default_ico = get_template_directory_uri().'/images/none.png'; 
   $bookmarks = get_bookmarks('orderby=date&category=' .$id );
   $output = '';
   if ( !empty($bookmarks) ) {
       $output .= '<ul class="link-items fontSmooth">';
       foreach ($bookmarks as $bookmark) {
-        $output .=  '<li class="link-item"><a class="link-item-inner effect-apollo" href="' . $bookmark->link_url . '" title="' . $bookmark->link_description . '" target="_blank" ><img class="linksimage" src="'. $bookmark->link_url .'/favicon.ico" alt=""><span class="sitename">'. $bookmark->link_name .'</span><div class="linkdes">'. ''. $bookmark->link_description .'</div></a></li>';
+        $output .=  '<li class="link-item"><a class="link-item-inner effect-apollo" href="' . $bookmark->link_url . '" title="' . $bookmark->link_description . '" target="_blank" >
+		<img class="linksimage" src="'. $bookmark->link_url.'/favicon.ico" onerror="javascript:this.src=\'' . $default_ico . '\'" /><span class="sitename">'. $bookmark->link_name .'</span><div class="linkdes">'. ''. $bookmark->link_description .'</div></a></li>';
       }
       $output .= '</ul>';
   }
@@ -816,7 +818,6 @@ add_action('comment_post', 'comment_mail_notify');
  * 引用方糖气球评论微信推送
  */
 function wpso_wechet_comment_notify($comment_id) {
-    $comment = get_comment($comment_id);
     $text = get_bloginfo('name'). '上有新的评论';  
     $comment = get_comment($comment_id);
 		$wpso_wenotify_key = akina_option('wpso_wenotify_key');
@@ -840,7 +841,7 @@ function wpso_wechet_comment_notify($comment_id) {
     $admin_email = get_bloginfo ('admin_email');
     $comment_author_email = trim($comment->comment_author_email);
     if($admin_email!=$comment_author_email){
-    return $result = file_get_contents('http://sc.ftqq.com/'.$key.'.send', false, $context); 
+				return $result = file_get_contents('http://sc.ftqq.com/'.$key.'.send', false, $context); 
     }
 }  
 add_action('comment_post', 'wpso_wechet_comment_notify', 19, 2);

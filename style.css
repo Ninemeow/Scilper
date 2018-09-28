@@ -4,8 +4,8 @@ Theme Name: Scilper
 Theme URI: http://blog.skillcat.me/wordpress/271.html
 Author: Ninemeow
 Author URI: http://blog.skillcat.me
-Description: Akina-Siren 主题分支（原版地址 http://skyarea.cn/archives/466）
-Version: 2.0
+Description: Akina-Siren 主题分支（主题地址 http://blog.skillcat.me/wordpress/271.html）
+Version: 2.0.1
 Text Domain: Scilper
 Tags: Scilper, Akina-Siren（综合扩展版）, Siren, Akina, Wordpress主题
 */
@@ -3747,7 +3747,7 @@ li.feature-2 {
 
 @media (max-width: 860px) {
     .notice {
-        margin-top: 5px;
+        margin-top: 15px;
         margin-bottom: 10px;
     }
 }
@@ -3798,7 +3798,8 @@ li.feature-2 {
 
 #centerbg {
     width: 100%;
-    height: 550px;
+    height: 100%;
+		min-height: 550px;
     margin: 0;
     padding: 0;
     background-image: url(images/hd.jpg);
@@ -3813,9 +3814,9 @@ li.feature-2 {
     #centerbg {
         background-attachment: scroll;
     }
-    
-    .focusinfo,#video-container {
-        display: none;
+		
+    .top-social,#video-container {
+        display: none!important;
     }
 }
 
@@ -4609,98 +4610,385 @@ object {
 /* 
  * Loading 加载动画
  */
-#loading{
-		background-color: #fff;
-		height: 100%;
-		width: 100%;
-		position: fixed;
-		z-index: 9999;
-		margin-top: 0px;
-		top: 0px;
-		display:none;
-	}
-	#loading-center-absolute {
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		height: 200px;
-		width: 200px;
-		margin-top: -100px;
-		margin-left: -100px;
-		-ms-transform: rotate(-135deg); 
-	   	-webkit-transform: rotate(-135deg); 
-	    transform: rotate(-135deg);
-	}
-	.loading-object{
+#loading {
+	background-color: #fff;
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	z-index: 9999;
+	top: 0px;
+	display: none;
+}
 
-		-moz-border-radius: 50% 50% 50% 50%;
-		-webkit-border-radius: 50% 50% 50% 50%;
-		border-radius: 50% 50% 50% 50%;
-		position: absolute;
-		border-top: 5px solid #ffad33;
-		border-bottom: 5px solid transparent;
-		border-left:  5px solid #ffad33;
-		border-right: 5px solid transparent;
-		
-		-webkit-animation: animate 2s infinite;
-		animation: animate 2s infinite;	
+#loading-center-absolute {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 120px;
+	height: 50px;
+	margin-top: -25px;
+	margin-left: -60px;
+	text-align: center;
+}
 
-		}
-	#object_one{
-		left: 75px;
-		top: 75px;
-		width: 50px;
-		height: 50px;
-		}
-								
-	#object_two{
-		left: 65px;
-		top: 65px;
-		width: 70px;
-		height: 70px;
-		-webkit-animation-delay: 0.2s;
-	    animation-delay: 0.2s;
-		}
-			
-	#object_three{
-		left: 55px;
-		top: 55px;
-		width: 90px;
-		height: 90px;
-		-webkit-animation-delay: 0.4s;
-	    animation-delay: 0.4s;
-		}
-	#object_four{
-		left: 45px;
-		top: 45px;
-		width: 110px;
-		height: 110px;
-		-webkit-animation-delay: 0.6s;
-	    animation-delay: 0.6s;
-		
-		}	
+@-moz-keyframes heartbeat-loader {
+  0% {
+    -moz-transform: rotate(45deg) scale(1);
+    transform: rotate(45deg) scale(1);
+  }
+  14% {
+    -moz-transform: rotate(45deg) scale(1.3);
+    transform: rotate(45deg) scale(1.3);
+  }
+  28% {
+    -moz-transform: rotate(45deg) scale(1);
+    transform: rotate(45deg) scale(1);
+  }
+  42% {
+    -moz-transform: rotate(45deg) scale(1.3);
+    transform: rotate(45deg) scale(1.3);
+  }
+  70% {
+    -moz-transform: rotate(45deg) scale(1);
+    transform: rotate(45deg) scale(1);
+  }
+}
+@-webkit-keyframes heartbeat-loader {
+  0% {
+    -webkit-transform: rotate(45deg) scale(1);
+    transform: rotate(45deg) scale(1);
+  }
+  14% {
+    -webkit-transform: rotate(45deg) scale(1.3);
+    transform: rotate(45deg) scale(1.3);
+  }
+  28% {
+    -webkit-transform: rotate(45deg) scale(1);
+    transform: rotate(45deg) scale(1);
+  }
+  42% {
+    -webkit-transform: rotate(45deg) scale(1.3);
+    transform: rotate(45deg) scale(1.3);
+  }
+  70% {
+    -webkit-transform: rotate(45deg) scale(1);
+    transform: rotate(45deg) scale(1);
+  }
+}
+@keyframes heartbeat-loader {
+  0% {
+    -moz-transform: rotate(45deg) scale(1);
+    -ms-transform: rotate(45deg) scale(1);
+    -webkit-transform: rotate(45deg) scale(1);
+    transform: rotate(45deg) scale(1);
+  }
+  14% {
+    -moz-transform: rotate(45deg) scale(1.3);
+    -ms-transform: rotate(45deg) scale(1.3);
+    -webkit-transform: rotate(45deg) scale(1.3);
+    transform: rotate(45deg) scale(1.3);
+  }
+  28% {
+    -moz-transform: rotate(45deg) scale(1);
+    -ms-transform: rotate(45deg) scale(1);
+    -webkit-transform: rotate(45deg) scale(1);
+    transform: rotate(45deg) scale(1);
+  }
+  42% {
+    -moz-transform: rotate(45deg) scale(1.3);
+    -ms-transform: rotate(45deg) scale(1.3);
+    -webkit-transform: rotate(45deg) scale(1.3);
+    transform: rotate(45deg) scale(1.3);
+  }
+  70% {
+    -moz-transform: rotate(45deg) scale(1);
+    -ms-transform: rotate(45deg) scale(1);
+    -webkit-transform: rotate(45deg) scale(1);
+    transform: rotate(45deg) scale(1);
+  }
+}
 
-	@-webkit-keyframes animate {
-	 
+/* :not(:required) hides this rule from IE9 and below */
+.heartbeat-loader:not(:required) {
+  -moz-animation: heartbeat-loader 1300ms ease 0s infinite normal;
+  -webkit-animation: heartbeat-loader 1300ms ease 0s infinite normal;
+  animation: heartbeat-loader 1300ms ease 0s infinite normal;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  text-indent: -9999px;
+  width: 36px;
+  height: 36px;
+	margin: 0 auto;
+  -moz-transform: rotate(45deg) scale(1);
+  -ms-transform: rotate(45deg) scale(1);
+  -webkit-transform: rotate(45deg) scale(1);
+  transform: rotate(45deg) scale(1);
+  -moz-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  -webkit-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+}
+.heartbeat-loader:not(:required):after, .heartbeat-loader:not(:required):before {
+  position: absolute;
+  content: "";
+  background: #e87;
+}
+.heartbeat-loader:not(:required):before {
+  -moz-border-radius-topleft: 12px;
+  -webkit-border-top-left-radius: 12px;
+  border-top-left-radius: 12px;
+  -moz-border-radius-bottomleft: 12px;
+  -webkit-border-bottom-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  top: 12px;
+  left: 0;
+  width: 36px;
+  height: 24px;
+}
+.heartbeat-loader:not(:required):after {
+  -moz-border-radius-topleft: 12px;
+  -webkit-border-top-left-radius: 12px;
+  border-top-left-radius: 12px;
+  -moz-border-radius-topright: 12px;
+  -webkit-border-top-right-radius: 12px;
+  border-top-right-radius: 12px;
+  top: 0;
+  left: 12px;
+  width: 24px;
+  height: 12px;
+}
 
-	50% {
-
-		-ms-transform: rotate(360deg) scale(0.8); 
-	   	-webkit-transform: rotate(360deg) scale(0.8); 
-	    transform: rotate(360deg) scale(0.8); 
-	  }
-	}
-
-	@keyframes animate {
-		
-	50% {
-
-		-ms-transform: rotate(360deg) scale(0.8); 
-	   	-webkit-transform: rotate(360deg) scale(0.8); 
-	    transform: rotate(360deg) scale(0.8); 
-	  }	
-	}
-
+@-moz-keyframes gauge-loader {
+  0% {
+    -moz-transform: rotate(-50deg);
+    transform: rotate(-50deg);
+  }
+  10% {
+    -moz-transform: rotate(20deg);
+    transform: rotate(20deg);
+  }
+  20% {
+    -moz-transform: rotate(60deg);
+    transform: rotate(60deg);
+  }
+  24% {
+    -moz-transform: rotate(60deg);
+    transform: rotate(60deg);
+  }
+  40% {
+    -moz-transform: rotate(-20deg);
+    transform: rotate(-20deg);
+  }
+  54% {
+    -moz-transform: rotate(70deg);
+    transform: rotate(70deg);
+  }
+  56% {
+    -moz-transform: rotate(78deg);
+    transform: rotate(78deg);
+  }
+  58% {
+    -moz-transform: rotate(73deg);
+    transform: rotate(73deg);
+  }
+  60% {
+    -moz-transform: rotate(75deg);
+    transform: rotate(75deg);
+  }
+  62% {
+    -moz-transform: rotate(70deg);
+    transform: rotate(70deg);
+  }
+  70% {
+    -moz-transform: rotate(-20deg);
+    transform: rotate(-20deg);
+  }
+  80% {
+    -moz-transform: rotate(20deg);
+    transform: rotate(20deg);
+  }
+  83% {
+    -moz-transform: rotate(25deg);
+    transform: rotate(25deg);
+  }
+  86% {
+    -moz-transform: rotate(20deg);
+    transform: rotate(20deg);
+  }
+  89% {
+    -moz-transform: rotate(25deg);
+    transform: rotate(25deg);
+  }
+  100% {
+    -moz-transform: rotate(-50deg);
+    transform: rotate(-50deg);
+  }
+}
+@-webkit-keyframes gauge-loader {
+  0% {
+    -webkit-transform: rotate(-50deg);
+    transform: rotate(-50deg);
+  }
+  10% {
+    -webkit-transform: rotate(20deg);
+    transform: rotate(20deg);
+  }
+  20% {
+    -webkit-transform: rotate(60deg);
+    transform: rotate(60deg);
+  }
+  24% {
+    -webkit-transform: rotate(60deg);
+    transform: rotate(60deg);
+  }
+  40% {
+    -webkit-transform: rotate(-20deg);
+    transform: rotate(-20deg);
+  }
+  54% {
+    -webkit-transform: rotate(70deg);
+    transform: rotate(70deg);
+  }
+  56% {
+    -webkit-transform: rotate(78deg);
+    transform: rotate(78deg);
+  }
+  58% {
+    -webkit-transform: rotate(73deg);
+    transform: rotate(73deg);
+  }
+  60% {
+    -webkit-transform: rotate(75deg);
+    transform: rotate(75deg);
+  }
+  62% {
+    -webkit-transform: rotate(70deg);
+    transform: rotate(70deg);
+  }
+  70% {
+    -webkit-transform: rotate(-20deg);
+    transform: rotate(-20deg);
+  }
+  80% {
+    -webkit-transform: rotate(20deg);
+    transform: rotate(20deg);
+  }
+  83% {
+    -webkit-transform: rotate(25deg);
+    transform: rotate(25deg);
+  }
+  86% {
+    -webkit-transform: rotate(20deg);
+    transform: rotate(20deg);
+  }
+  89% {
+    -webkit-transform: rotate(25deg);
+    transform: rotate(25deg);
+  }
+  100% {
+    -webkit-transform: rotate(-50deg);
+    transform: rotate(-50deg);
+  }
+}
+@keyframes gauge-loader {
+  0% {
+    -moz-transform: rotate(-50deg);
+    -ms-transform: rotate(-50deg);
+    -webkit-transform: rotate(-50deg);
+    transform: rotate(-50deg);
+  }
+  10% {
+    -moz-transform: rotate(20deg);
+    -ms-transform: rotate(20deg);
+    -webkit-transform: rotate(20deg);
+    transform: rotate(20deg);
+  }
+  20% {
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    transform: rotate(60deg);
+  }
+  24% {
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    transform: rotate(60deg);
+  }
+  40% {
+    -moz-transform: rotate(-20deg);
+    -ms-transform: rotate(-20deg);
+    -webkit-transform: rotate(-20deg);
+    transform: rotate(-20deg);
+  }
+  54% {
+    -moz-transform: rotate(70deg);
+    -ms-transform: rotate(70deg);
+    -webkit-transform: rotate(70deg);
+    transform: rotate(70deg);
+  }
+  56% {
+    -moz-transform: rotate(78deg);
+    -ms-transform: rotate(78deg);
+    -webkit-transform: rotate(78deg);
+    transform: rotate(78deg);
+  }
+  58% {
+    -moz-transform: rotate(73deg);
+    -ms-transform: rotate(73deg);
+    -webkit-transform: rotate(73deg);
+    transform: rotate(73deg);
+  }
+  60% {
+    -moz-transform: rotate(75deg);
+    -ms-transform: rotate(75deg);
+    -webkit-transform: rotate(75deg);
+    transform: rotate(75deg);
+  }
+  62% {
+    -moz-transform: rotate(70deg);
+    -ms-transform: rotate(70deg);
+    -webkit-transform: rotate(70deg);
+    transform: rotate(70deg);
+  }
+  70% {
+    -moz-transform: rotate(-20deg);
+    -ms-transform: rotate(-20deg);
+    -webkit-transform: rotate(-20deg);
+    transform: rotate(-20deg);
+  }
+  80% {
+    -moz-transform: rotate(20deg);
+    -ms-transform: rotate(20deg);
+    -webkit-transform: rotate(20deg);
+    transform: rotate(20deg);
+  }
+  83% {
+    -moz-transform: rotate(25deg);
+    -ms-transform: rotate(25deg);
+    -webkit-transform: rotate(25deg);
+    transform: rotate(25deg);
+  }
+  86% {
+    -moz-transform: rotate(20deg);
+    -ms-transform: rotate(20deg);
+    -webkit-transform: rotate(20deg);
+    transform: rotate(20deg);
+  }
+  89% {
+    -moz-transform: rotate(25deg);
+    -ms-transform: rotate(25deg);
+    -webkit-transform: rotate(25deg);
+    transform: rotate(25deg);
+  }
+  100% {
+    -moz-transform: rotate(-50deg);
+    -ms-transform: rotate(-50deg);
+    -webkit-transform: rotate(-50deg);
+    transform: rotate(-50deg);
+  }
+}
 
 
 /*
@@ -5002,6 +5290,14 @@ i.iconfont.down , i.iconfont.demo {
     #archives-temp {
         padding: 0 20px
     }
+		
+		.header-info{
+			width: 80%;
+		}
+		
+		.focusinfo img{
+			width: 120px;
+		}
 }
 
 @media (max-width: 1200px) {

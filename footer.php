@@ -113,10 +113,8 @@ if (akina_option('general_disqus_plugin_support')) {
 <!-- page loading -->
 <div id="loading">
     <div id="loading-center-absolute">
-        <div class="loading-object" id="object_four"></div>
-        <div class="loading-object" id="object_three"></div>
-        <div class="loading-object" id="object_two"></div>
-        <div class="loading-object" id="object_one"></div>
+			<span class="heartbeat-loader">Loading&#8230;</span>
+			<p>正在玩命加载中...</p>
     </div>
 </div>
 
