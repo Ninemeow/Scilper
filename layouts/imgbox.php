@@ -14,7 +14,7 @@ $bg_style = akina_option('focus_height') ? 'background-position: center center;b
 	  	<?php else :?>
          <div class="header-tou" ><a href="<?php bloginfo('url');?>"><img src="<?php bloginfo('template_url'); ?>/images/avatar.jpg"></a></div>	
       	<?php endif; ?>
-		<div class="header-info"><p><?php echo akina_option('admin_des', 'Carpe Diem and Do what I like'); ?></p></div>
+		<div id="hitokoto" class="header-info animated"><p id="hitokoto_text"><?php echo akina_option('admin_des', 'Carpe Diem and Do what I like'); ?></p></div>
 		<div class="top-social">
 		<?php if (akina_option('wechat')){ ?>
 		<li class="wechat"><a href="#"><img src="<?php bloginfo('template_url'); ?>/images/sns/wechat.png"/></a>

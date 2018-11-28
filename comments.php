@@ -56,6 +56,9 @@
                             <?php endif; ?>
                             <?php if (!$user_ID): ?>
                                 <div id="comment-author-info">
+                                	<div class="visitor">
+                                		<img src="<?php bloginfo('template_url'); ?>/images/none.png" width="54" height="54" class="avatar_visitor" />
+                                	</div>
                                     <input type="text" name="author" id="author" class="commenttext" placeholder="昵称（必填）" value="<?php echo $comment_author; ?>" size="22" tabindex="1" placeholder="Name"/>
                                     <label for="author"></label>
                                     <input type="text" name="email" id="email" class="commenttext" value="<?php echo $comment_author_email; ?>" size="22" placeholder="邮箱（必填）" tabindex="2"/>
@@ -65,7 +68,7 @@
                                 </div>
                             <?php endif; ?>
                             <div class="clear"></div>
-                            <p class="coments_words"><textarea name="comment" id="comment" placeholder="快来吐槽..." tabindex="4" cols="50" rows="5"></textarea></p>
+                            <p class="coments_words"><textarea name="comment" id="comment" placeholder="来都来了，不说点啥吗？" tabindex="4" cols="50" rows="5"></textarea></p>
                             <div class="com-footer">
                                 <div>
                                     <label class="siren-checkbox-label"><input class="siren-checkbox-radio" type="checkbox" name="no-robot"><span class="siren-no-robot-checkbox siren-checkbox-radioInput"></span>！我不是机器人 | I'm not a robot</label>
@@ -75,9 +78,11 @@
                                 </div>
                                 <input class="submit" name="submit" type="submit" id="submit" tabindex="5" value="发表评论"/>
                                 <?php comment_id_fields(); ?>
-                                <a class="smli-button"><img src="<?php bloginfo('template_url'); ?>/images/smile.png"/></a>
-                                <div id="smilies-box" class="smilies-box">
-                                    <?php include TEMPLATEPATH . '/inc/smiley.php'; ?>
+                                <div class="smilies">
+                                	<a class="smli-button"><img src="<?php bloginfo('template_url'); ?>/images/smile.png"/></a>
+	                                <div id="smilies-box" class="smilies-box">
+	                                    <?php include TEMPLATEPATH . '/inc/smiley.php'; ?>
+	                                </div>
                                 </div>
                             </div>
                             <?php do_action('comment_form', $post->ID); ?>

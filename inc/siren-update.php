@@ -142,10 +142,10 @@ if(!function_exists('siren_ajax_comment_err')) {
 // 机器评论验证
 function siren_robot_comment(){
   if ( !$_POST['no-robot'] && !is_user_logged_in()) {
-     siren_ajax_comment_err('上车请刷卡。<br>Please comfirm you are not a robot.');
+     siren_ajax_comment_err('上车请刷卡！<br>Please comfirm you are not a robot.');
   }
 }
-if(akina_option('norobot')) add_action('pre_comment_on_post', 'siren_robot_comment');
+add_action('pre_comment_on_post', 'siren_robot_comment');
 // 纯英文评论拦截
 function scp_comment_post( $incoming_comment ) {
   // 为什么要拦自己呢？
@@ -179,12 +179,12 @@ if(!function_exists('siren_ajax_comment_callback')) {
           <div class="comment-arrow">
             <div class="main shadow">
                 <div class="profile">
-                  <a href="<?php comment_author_url(); ?>"><?php echo get_avatar( $comment->comment_author_email, '80', '', get_comment_author() ); ?></a>
+                  <a href="<?php comment_author_url(); ?>" target="_blank"><?php echo get_avatar( $comment->comment_author_email, '80', '', get_comment_author() ); ?></a>
                 </div>
                 <div class="commentinfo">
                   <section class="commeta">
                     <div class="left">
-                      <h4 class="author"><a href="<?php comment_author_url(); ?>"><?php echo get_avatar( $comment->comment_author_email, '80', '', get_comment_author() ); ?><?php comment_author(); ?> <span class="isauthor" title="<?php esc_attr_e('Author', 'akina'); ?>"></span></a></h4>
+                      <h4 class="author"><a href="<?php comment_author_url(); ?>" target="_blank"><?php echo get_avatar( $comment->comment_author_email, '80', '', get_comment_author() ); ?><?php comment_author(); ?> <span class="isauthor" title="<?php esc_attr_e('Author', 'akina'); ?>"></span></a></h4>
                     </div>
                     <div class="right">
                       <div class="info"><time datetime="<?php comment_date('Y-m-d'); ?>"><?php echo poi_time_since(strtotime($comment->comment_date_gmt), true );//comment_date(get_option('date_format')); ?></time></div>
@@ -600,7 +600,7 @@ function siren_private_message_hook($comment_content , $comment){
     $current_commenter = wp_get_current_commenter();
     if ( $is_private ) $comment_content = '#私密# ' . $comment_content;
     if ( $current_commenter['comment_author_email'] == $email || $parent_email == $current_commenter['comment_author_email'] || current_user_can('delete_user') ) return $comment_content;
-    if ( $is_private ) return '该评论为私密评论';
+    if ( $is_private ) return '#该评论为私密评论#';
     return $comment_content;
 }
 add_filter('get_comment_text','siren_private_message_hook',10,2);
@@ -799,18 +799,55 @@ function siren_get_useragent($ua){
   return false;
 }
 
-
 function font_end_js_control() { ?>
+
 <script type="text/javascript">
 /*Initial Variables*/
-var scilper_option = new Object();
-scilper_option.site_name = "<?php echo get_option('blogname'); ?>";
-scilper_option.author_name = "<?php echo the_author(); ?>";
-
+	var scilper_option = new Object();
+	scilper_option.site_name = "<?php echo get_option('blogname'); ?>";
+	scilper_option.author_name = "<?php echo the_author_nickname(); ?>";
+	scilper_option.admin_des = "<?php echo akina_option('admin_des', ''); ?>";
 /*End of Initial Variables*/
 </script>
 <?php }
-add_action('wp_head', 'font_end_js_control');
+add_action('wp_footer', 'font_end_js_control');
+
+/*
+ * Hitokoto !
+ */
+if ( akina_option('scilper_hitokoto') != '0' ) {
+	function scilper_hitokoto() {
+?>
+<script type="text/javascript">
+	// Hitokoto !
+	function Hitokoto() {
+	    fetch("https://v1.hitokoto.cn?encode=json")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+        	var author = !!data.from ? data.from : "无名氏";
+            if ($('#hitokoto').hasClass("animated")) {
+                $('#hitokoto').removeClass("animated");
+                $('#hitokoto').removeClass("fadeIn");
+            }
+            $('#hitokoto').animateCss('bounce');
+            $('#hitokoto_text').text(data.hitokoto + ' -「' + author + '」');
+            window.setTimeout(Hitokoto, 600000); // 十分钟获取一次,可以自行修改（Hitokoto有20QPS闸值限制）
+        })
+        .catch(function (err) {
+            console.error(err);
+        });
+	}
+	var isID = 0;
+	if (!isID) {
+		window.setTimeout(Hitokoto, 10000);
+	}
+</script>
+<?php
+	}
+	add_action('wp_footer', 'scilper_hitokoto', 20, 4);
+}
 
 /*
  * 打赏

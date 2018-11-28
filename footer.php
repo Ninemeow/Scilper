@@ -12,19 +12,18 @@
 ?>
 </div><!-- #content -->
 <?php
-if (akina_option('general_disqus_plugin_support')) {
-    get_template_part('layouts/duoshuo');
-} else {
-    comments_template('', true);
-}
+	if (akina_option('general_disqus_plugin_support')) {
+	    get_template_part('layouts/duoshuo');
+	} else {
+	    comments_template('', true);
+	}
 ?>
 </div><!-- #page Pjax container-->
 <footer id="colophon" class="site-footer" role="contentinfo">
     <div class="site-info">
         <div class="footertext">
-            <p class="foo-logo"
-               style="background-image: url('<?php bloginfo('template_url'); ?>/images/f-logo.png');"></p>
-            <div class="footer-device"><?php echo akina_option('admin_des', ''); ?></div>
+            <p class="foo-logo" style="background-image: url('<?php bloginfo('template_url'); ?>/images/f-logo.png');"></p>
+            <div id="typing" class="footer-device"><?php echo akina_option('admin_des', ''); ?></div>
         </div>
         <!--显示底部加载所用时间-->
         <?php if (akina_option('load-timeshow') != '0') { ?>
@@ -54,7 +53,6 @@ if (akina_option('general_disqus_plugin_support')) {
                         seconds = Math.floor((e_minsold - minsold) * 60);
                         span_dt_dt.innerHTML = " <?php bloginfo('name');?>已经勉强存活了：" + daysold + "天" + hrsold + "小时" + minsold + "分" + seconds + "秒";
                     }
-
                     show_date_time();
                 </script>
             </div>
@@ -64,7 +62,7 @@ if (akina_option('general_disqus_plugin_support')) {
             <?php
             $statistics_link = akina_option('site_statistics_link') ? '<a href="' . akina_option('site_statistics_link') . '" target="_blank" rel="nofollow">Statistics</a>' : '';
             $site_map_link = akina_option('site_map_link') ? '<a href="' . akina_option('site_map_link') . '" target="_blank" rel="nofollow">Sitemap</a>' : '';
-            printf(esc_html__('%1$s &nbsp; %2$s &nbsp; %3$s &nbsp; %4$s', 'akina'), $site_map_link, '<a href="http://i94.me" rel="designer" target="_blank" rel="nofollow">Theme</a>', '<a href="https://wordpress.org/" target="_blank" rel="nofollow">WordPress</a>', $statistics_link);
+            printf(esc_html__('%1$s &nbsp; %2$s &nbsp; %3$s &nbsp; %4$s', 'akina'), $site_map_link, '<a href="http://blog.skillcat.me" rel="designer" target="_blank" rel="nofollow">Theme</a>', '<a href="https://wordpress.org/" target="_blank" rel="nofollow">WordPress</a>', $statistics_link);
             ?>
         </div>
         <div class="footer-device"><?php echo akina_option('copyrightlink') ? '<a href="http://www.miitbeian.gov.cn" target="_blank" rel="nofollow">' . akina_option('copyrightlink') . '</a>' : ''; ?></div>
@@ -113,8 +111,8 @@ if (akina_option('general_disqus_plugin_support')) {
 <!-- page loading -->
 <div id="loading">
     <div id="loading-center-absolute">
-			<span class="heartbeat-loader">Loading&#8230;</span>
-			<p>正在玩命加载中...</p>
+		<span class="heartbeat-loader">Loading&#8230;</span>
+		<p>正在玩命加载中...</p>
     </div>
 </div>
 
@@ -124,61 +122,64 @@ if (akina_option('general_disqus_plugin_support')) {
         <script type="text/javascript"><?php echo akina_option('site_statistics'); ?></script>
     </div>
 <?php } ?>
-
-<!-- 波浪动画 -->
 <?php if (akina_option('focus_canvas_animinte') == 'waveloop') { ?>
-    <script>
-        $(function () {
-            //底部波浪动画
-            function waveloop1() {
-                $("#banner_bolang_bg_1").css({"left": "-236px"}).animate({"left": "-1233px"}, 25000, 'linear', waveloop1);
-            }
-
-            function waveloop2() {
-                $("#banner_bolang_bg_2").css({"left": "0px"}).animate({"left": "-1009px"}, 60000, 'linear', waveloop2);
-            }
-
-            //循环播放
-            if (screen && screen.width > 480) {
-                waveloop1();
-                waveloop2();
-            }
-        });
-    </script>
-<?php } ?>
-
-<!-- 气泡动画 -->
-<?php if (akina_option('focus_canvas_animinte') == 'bubble') { ?>
-    <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/js/bubble.js"></script>
-    <script>
-        $(document).ready(function () {
-            $(".bubble").show();
-        });
-    </script>
-<?php } ?>
-
-<!-- 引入峰窝canvas 如果屏幕大于480的话 -->
-<?php if (akina_option('canvas_nest') != '0') { ?>
-    <script>
-        if (screen && screen.width > 480) {
-            document.write('<script src="<?php echo get_stylesheet_directory_uri(); ?>/js/canvas-nest.min.js" type="text/javascript"><\/script>');
+<!-- 波浪动画 -->
+<script type="text/javascript">
+    $(function () {
+        //底部波浪动画
+        function waveloop1() {
+            $("#banner_bolang_bg_1").css({"left": "-236px"}).animate({"left": "-1233px"}, 25000, 'linear', waveloop1);
         }
-    </script>
-<?php } ?>
 
+        function waveloop2() {
+            $("#banner_bolang_bg_2").css({"left": "0px"}).animate({"left": "-1009px"}, 60000, 'linear', waveloop2);
+        }
+
+        //循环播放
+        if (screen && screen.width > 480) {
+            waveloop1();
+            waveloop2();
+        }
+    });
+</script>
+<?php } ?>
+<?php if (akina_option('focus_canvas_animinte') == 'bubble') { ?>
+<!-- 气泡动画 -->
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/js/bubble.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".bubble").show();
+    });
+</script>
+<?php } ?>
+<?php if (akina_option('canvas_nest') != '0') { ?>
+<!-- 引入峰窝canvas 如果屏幕大于480的话 -->
+<script type="text/javascript">
+    if (screen && screen.width > 480) {
+        document.write('<script src="<?php echo get_stylesheet_directory_uri(); ?>/js/canvas-nest.min.js" type="text/javascript"><\/script>');
+    }
+</script>
+<?php } ?>
+<?php if (akina_option('canvas_heart') != '0') { ?>
+<!-- 鼠标❤特效 -->
+<script type="text/javascript">
+    if (screen && screen.width > 480) {
+        document.write('<script src="<?php echo get_stylesheet_directory_uri(); ?>/js/canvas-heart.min.js" type="text/javascript"><\/script>');
+    }
+</script>
+<?php } ?>
+<?php if (akina_option('progress_type') == 'loadprogress') { ?>
 <!-- nprogress进度条加载 -->
-<?php
-if (akina_option('progress_type') == 'loadprogress') { ?>
-    <script>
-        $('body').show();
-        $('.version').text(NProgress.version);
-        NProgress.start();
-        setTimeout(function () {
-            NProgress.done();
-            $('.fade').removeClass('out');
-        }, 1000);
-    </script>
+<script type="text/javascript">
+    $('body').show();
+    $('.version').text(NProgress.version);
+    NProgress.start();
+    setTimeout(function () {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 1000);
+</script>
 <?php } ?>
 
-</body>
+	</body>
 </html>

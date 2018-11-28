@@ -295,8 +295,15 @@ function optionsframework_options() {
 		
 	$options[] = array(
 		'name' => __('总开关', 'options_framework_theme'),
-		'desc' => __('默认开启，勾选关闭', 'options_framework_theme'),
+		'desc' => __('默认开启，勾选全部关闭', 'options_framework_theme'),
 		'id' => 'head_focus',
+		'std' => '0',
+		'type' => 'checkbox');
+	
+	$options[] = array(
+		'name' => __('开启Hitokoto（一言）', 'options_framework_theme'),
+		'desc' => __('默认关闭，勾选开启，显示主页info区域（10分钟/刷新可更换一次）', 'options_framework_theme'),
+		'id' => 'scilper_hitokoto',
 		'std' => '0',
 		'type' => 'checkbox');
 
@@ -314,41 +321,41 @@ function optionsframework_options() {
 		'std' => '0',
 		'type' => 'checkbox'); 	
 	
-	 $options[] = array(
+	$options[] = array(
 		'name' => __('开启视频', 'options_framework_theme'),
 		'desc' => __('勾选开启', 'options_framework_theme'),
 		'id' => 'focus_amv',
 		'std' => '0',
 		'type' => 'checkbox');
 
-	 $options[] = array(
+	$options[] = array(
 		'name' => __('Live', 'options_framework_theme'),
 		'desc' => __('勾选开启，视频自动续播，需要开启Pjax功能', 'options_framework_theme'),
 		'id' => 'focus_mvlive',
 		'std' => '0',
 		'type' => 'checkbox');
 
-	 $options[] = array(
+	$options[] = array(
 		'name' => __('视频地址', 'options_framework_theme'),
 		'desc' => __('视频的来源地址，该地址拼接下面的视频名，地址尾部不需要加斜杠', 'options_framework_theme'),
 		'id' => 'amv_url',
 		'std' => '',
 		'type' => 'text');
 
-	 $options[] = array(
+	$options[] = array(
 		'name' => __('视频名称', 'options_framework_theme'),
 		'desc' => __('abc.mp4 ，只需要填写视频名称 abc 即可，多个用英文逗号隔开如 abc,efg ，无需在意顺序，因为加载是随机的抽取的 ', 'options_framework_theme'),
 		'id' => 'amv_title',
 		'std' => '',
 		'type' => 'text');
 
-	 $options[] = array(
+	$options[] = array(
 		'name' => __('个人头像', 'options_framework_theme'),
 		'desc' => __('最佳高度尺寸130px。', 'options_framework_theme'),
 		'id' => 'focus_logo',
 		'type' => 'upload');
 
-	 $options[] = array(
+	$options[] = array(
 		'name' => __('背景图', 'options_framework_theme'),
 		'desc' => __('最佳尺寸1920*1080', 'options_framework_theme'),
 		'id' => 'focus_img_1',
@@ -767,8 +774,15 @@ function optionsframework_options() {
 		'type' => 'upload');
 		
 	$options[] = array(
+		'name' => __('鼠标点击特效❤', 'options_framework_theme'),
+		'desc' => __('默认关闭，勾选开启', 'options_framework_theme'),
+		'id' => 'canvas_heart',
+		'std' => '0',
+		'type' => 'checkbox');
+		
+	$options[] = array(
 		'name' => __('网站标题自动判断', 'options_framework_theme'),
-		'desc' => __('比较好玩……', 'options_framework_theme'),
+		'desc' => __('点击开启，比较好玩…', 'options_framework_theme'),
 		'id' => 'web_title',
 		'std' => '0',
 		'type' => 'checkbox');

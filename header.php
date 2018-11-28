@@ -14,44 +14,26 @@
 	<head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title itemprop="name">
-			<?php global $page, $paged;
-        wp_title('-', true, 'right');
-        bloginfo('name');
-        $site_description = get_bloginfo('description', 'display');
-        if ($site_description && (is_home() || is_front_page())) echo " - $site_description";
-        if ($paged >= 2 || $page >= 2) echo ' - ' . sprintf(__('第 %s 页'), max($paged, $page)); 
-			?>
-    </title>
-
-    <!--网站标题自动判断	设置/*-->
+    <title itemprop="name"><?php global $page, $paged;wp_title('-', true, 'right');bloginfo('name');$site_description = get_bloginfo('description', 'display');if ($site_description && (is_home() || is_front_page())) echo " - $site_description";if ($paged >= 2 || $page >= 2) echo ' - ' . sprintf(__('第 %s 页'), max($paged, $page)); ?></title>
     <?php if (akina_option('web_title') != '0') {
         $onblur_text = akina_option('onblur');
         $onfocus_text = akina_option('onfocus');
-        ?>
-
-        <script type="text/javascript">
-            var title = document.title;
-            // window 失去焦点
-            window.onblur = function () {
-                document.title = '<?php echo $onblur_text;?>';
-            };
-            // window 获得焦点
-            window.onfocus = function () {
-                document.title = '<?php echo $onfocus_text;?>';
-                setTimeout("document.title=title", 3000);
-            }
-        </script>
-
+    ?>
+    <!--网站标题自动判断	设置/*-->
+    <script type="text/javascript">
+        var title = document.title;
+        // window 失去焦点
+        window.onblur = function () {
+            document.title = '<?php echo $onblur_text;?>';
+        };
+        // window 获得焦点
+        window.onfocus = function () {
+            document.title = '<?php echo $onfocus_text;?>';
+            setTimeout("document.title=title", 3000);
+        }
+    </script>
     <?php } ?>
-
-		<?php
-		if ( akina_option('progress_type') == 'loadprogress') { ?>
-			<script src="<?php bloginfo('template_url'); ?>/js/nprogress.js"></script>
-		<?php }?>
-
-    <?php
-    if (akina_option('akina_meta') == true) {
+    <?php if (akina_option('akina_meta') == true) {
         $keywords = '';
         $description = '';
         if (is_singular()) {
@@ -73,9 +55,9 @@
             $keywords = akina_option('akina_meta_keywords');
             $description = akina_option('akina_meta_description');
         };
-        ?>
-        <meta name="description" content="<?php echo $description; ?>"/>
-        <meta name="keywords" content="<?php echo $keywords; ?>"/>
+    ?>
+    <meta name="description" content="<?php echo $description; ?>"/>
+	<meta name="keywords" content="<?php echo $keywords; ?>"/>
     <?php } ?>
     <link rel="shortcut icon" href="<?php echo akina_option('favicon_link', ''); ?>"/>
     <?php wp_head(); ?>
@@ -83,62 +65,59 @@
         var t1 = new Date().getTime();
         if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
             alert('请抛弃万恶的IE系列浏览器吧！');
-        }
-        ;
+        };
     </script>
+	<?php if ( akina_option('progress_type') == 'loadprogress') { ?>
+	<script src="<?php bloginfo('template_url'); ?>/js/nprogress.js"></script>
+	<?php }?>
+    <?php if (akina_option('progress_type') == 'readprogress') { ?>
+	<!--/*阅读进度条js*/-->
+    <script type="text/javascript">
+        document.onscroll = function () {
+            var scrollDistance = getScrollTop();
+            var pxx = scrollAct(scrollDistance)
+            document.getElementById("readprogress").style.width = pxx;
+        }
 
-    <!--/*阅读进度条js*/-->
-    <?php
-    if (akina_option('progress_type') == 'readprogress') { ?>
-        <script type="text/javascript">
-            document.onscroll = function () {
-                var scrollDistance = getScrollTop();
-                var pxx = scrollAct(scrollDistance)
-                document.getElementById("readprogress").style.width = pxx;
-            }
+        function scrollAct(insetOff) {
+            var webHeight = document.body.scrollHeight - window.innerHeight;
+            var p = (insetOff / webHeight ) * 100;
+            return p.toString() + "%";
+        }
 
-            function scrollAct(insetOff) {
-                var webHeight = document.body.scrollHeight - window.innerHeight;
-                var p = (insetOff / webHeight ) * 100;
-                return p.toString() + "%";
+        function getScrollTop() {
+            var scrollPos;
+            if (window.pageYOffset) {
+                scrollPos = window.pageYOffset;
             }
-
-            function getScrollTop() {
-                var scrollPos;
-                if (window.pageYOffset) {
-                    scrollPos = window.pageYOffset;
-                }
-                else if (document.compatMode && document.compatMode != 'BackCompat') {
-                    scrollPos = document.documentElement.scrollTop;
-                }
-                else if (document.body) {
-                    scrollPos = document.body.scrollTop;
-                }
-                return scrollPos;
+            else if (document.compatMode && document.compatMode != 'BackCompat') {
+                scrollPos = document.documentElement.scrollTop;
             }
-        </script>
+            else if (document.body) {
+                scrollPos = document.body.scrollTop;
+            }
+            return scrollPos;
+        }
+    </script>
     <?php } ?>
-
-		<script type="text/javascript">
+	<script type="text/javascript">
 		function rbq() { 
-				var audio = document.createElement('audio');
-				var body = document.body;
-				audio.autoplay = true;
-				body.appendChild(audio);
-				audio.addEventListener('ended', function() {
-						body.removeChild(audio);  // 播放完毕后从HTML中删除该音频
-				}, false);
+			var audio = document.createElement('audio');
+			var body = document.body;
+			audio.autoplay = true;
+			body.appendChild(audio);
+			audio.addEventListener('ended', function() {
+					body.removeChild(audio);  // 播放完毕后从HTML中删除该音频
+			}, false);
 		};
-		</script>
-
-		<!--[if lt IE 8]>
-			<div class="old-browser">
-				<a href="http://browsehappy.com/">
-					<img src="<?php bloginfo('template_url'); ?>/images/older-browsers.png" alt="您的浏览器版本过低，为了保障您的访问安全，以及获得更友好的用户体验，建议您升级您的浏览器到最新版本。">
-				</a>
-			</div>
-		<![endif]-->
-
+	</script>
+	<!--[if lt IE 8]>
+		<div class="old-browser">
+			<a href="http://browsehappy.com/">
+				<img src="<?php bloginfo('template_url'); ?>/images/older-browsers.png" alt="您的浏览器版本过低，为了保障您的访问安全，以及获得更友好的用户体验，建议您升级您的浏览器到最新版本。">
+			</a>
+		</div>
+	<![endif]-->
 	</head>
 <body <?php body_class(); ?>>
 

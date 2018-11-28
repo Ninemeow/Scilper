@@ -7,7 +7,7 @@
  * @package Akina
  */
  
-define( 'SIREN_VERSION', '2.0.5' );
+define( 'SIREN_VERSION', '2.0.2' );
 
 if ( !function_exists( 'akina_setup' ) ) :
 /**
@@ -22,7 +22,6 @@ if ( !function_exists( 'optionsframework_init' ) ) {
 	define( 'OPTIONS_FRAMEWORK_DIRECTORY', get_template_directory_uri() . '/inc/' );
 	require_once dirname( __FILE__ ) . '/inc/options-framework.php';
 }
- 
 
 
 function akina_setup() {
@@ -201,22 +200,21 @@ function akina_setup() {
 	 * WordPress 后台回复评论插入表情
 	 */
 	function Bing_ajax_smiley_scripts(){
-			echo '<script type="text/javascript">function grin(e){var t;e=" "+e+" ";if(!document.getElementById("replycontent")||document.getElementById("replycontent").type!="textarea")return!1;t=document.getElementById("replycontent");if(document.selection)t.focus(),sel=document.selection.createRange(),sel.text=e,t.focus();else if(t.selectionStart||t.selectionStart=="0"){var n=t.selectionStart,r=t.selectionEnd,i=r;t.value=t.value.substring(0,n)+e+t.value.substring(r,t.value.length),i+=e.length,t.focus(),t.selectionStart=i,t.selectionEnd=i}else t.value+=e,t.focus()}jQuery(document).ready(function(e){var t="";e("#comments-form").length&&e.get(ajaxurl,{action:"ajax_data_smiley"},function(n){t=n,e("#qt_replycontent_toolbar input:last").after("<br>"+t)})})</script>';
+		echo '<script type="text/javascript">function grin(e){var t;e=" "+e+" ";if(!document.getElementById("replycontent")||document.getElementById("replycontent").type!="textarea")return!1;t=document.getElementById("replycontent");if(document.selection)t.focus(),sel=document.selection.createRange(),sel.text=e,t.focus();else if(t.selectionStart||t.selectionStart=="0"){var n=t.selectionStart,r=t.selectionEnd,i=r;t.value=t.value.substring(0,n)+e+t.value.substring(r,t.value.length),i+=e.length,t.focus(),t.selectionStart=i,t.selectionEnd=i}else t.value+=e,t.focus()}jQuery(document).ready(function(e){var t="";e("#comments-form").length&&e.get(ajaxurl,{action:"ajax_data_smiley"},function(n){t=n,e("#qt_replycontent_toolbar input:last").after("<br>"+t)})})</script>';
 	}
 	add_action( 'admin_head', 'Bing_ajax_smiley_scripts' );
 	
 	//Ajax 获取表情
 	function Bing_ajax_data_smiley(){
-			$site_url = site_url();
-			foreach( array_unique( (array) $GLOBALS['wpsmiliestrans'] ) as $key => $value ){
-					$src_url = apply_filters( 'smilies_src', includes_url( 'images/smilies/' . $value ), $value, $site_url );
-					echo ' <a href="javascript:grin(\'' . $key . '\')"><img src="' . $src_url . '" alt="' . $key . '" /></a> ';
-			}
-			die;
+		$site_url = site_url();
+		foreach( array_unique( (array) $GLOBALS['wpsmiliestrans'] ) as $key => $value ){
+			$src_url = apply_filters( 'smilies_src', includes_url( 'images/smilies/' . $value ), $value, $site_url );
+			echo ' <a href="javascript:grin(\'' . $key . '\')"><img src="' . $src_url . '" alt="' . $key . '" /></a> ';
+		}
+		die;
 	}
 	add_action( 'wp_ajax_nopriv_ajax_data_smiley', 'Bing_ajax_data_smiley' );
 	add_action( 'wp_ajax_ajax_data_smiley', 'Bing_ajax_data_smiley' );
-
 	
 	// 移除菜单冗余代码
 	add_filter('nav_menu_css_class', 'my_css_attributes_filter', 100, 1);
@@ -271,13 +269,18 @@ add_action( 'widgets_init', 'akina_widgets_init' );
  */
 function akina_scripts() {
 	wp_enqueue_style( 'siren', get_stylesheet_uri(), array(), SIREN_VERSION );
-	wp_enqueue_script( 'jq', get_template_directory_uri() . '/js/jquery.min.js', array(), SIREN_VERSION, true ); 
+//	wp_register_script( 'jq', get_template_directory_uri() . '/js/jquery.min.js', array(), SIREN_VERSION );
+	wp_enqueue_script( 'jq', get_template_directory_uri() . '/js/jquery.min.js', array(), SIREN_VERSION, true );
 	wp_enqueue_script( 'pjax-libs', get_template_directory_uri() . '/js/jquery.pjax.js', array(), SIREN_VERSION, true );
 	wp_enqueue_script( 'input', get_template_directory_uri() . '/js/input.min.js', array(), SIREN_VERSION, true );
     wp_enqueue_script( 'app', get_template_directory_uri() . '/js/app.js', array(), SIREN_VERSION, true );
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
+	if ( akina_option('scilper_hitokoto') != '0' ) {
+		wp_enqueue_style( 'animateCSS', 'https://cdn.jsdelivr.net/gh/daneden/animate.css/animate.min.css', array(), SIREN_VERSION ); 
+	}
+//	wp_enqueue_script('jq');
 
 	// 20161116 @Louie
 	$mv_live = akina_option('focus_mvlive') ? 'open' : 'close';
@@ -295,7 +298,7 @@ function akina_scripts() {
 		'formpostion' => 'bottom' // ajax comments 默认为bottom，如果你的表单在顶部则设置为top。
 	));
 }
-add_action( 'wp_enqueue_scripts', 'akina_scripts' );
+add_action( 'wp_enqueue_scripts', 'akina_scripts', 0, 0);
 
 /**
  * load .php.
@@ -331,12 +334,12 @@ if(!function_exists('akina_comment_format')){
 				<div class="comment-arrow">
 					<div class="main shadow">
 						<div class="profile">
-							<a href="<?php comment_author_url(); ?>"><?php echo get_avatar( $comment->comment_author_email, '80', '', get_comment_author() ); ?></a>
+							<a href="<?php comment_author_url(); ?>" target="_blank"><?php echo get_avatar( $comment->comment_author_email, '80', '', get_comment_author() ); ?></a>
 						</div>
 						<div class="commentinfo">
 							<section class="commeta">
 								<div class="left">
-									<h4 class="author"><a href="<?php comment_author_url(); ?>"><?php echo get_avatar( $comment->comment_author_email, '24', '', get_comment_author() ); ?><?php comment_author(); ?> <span class="isauthor" title="<?php esc_attr_e('Author', 'akina'); ?>">博主</span></a></h4>
+									<h4 class="author"><a href="<?php comment_author_url(); ?>" rel="external nofollow" target="_blank"><?php echo get_avatar( $comment->comment_author_email, '24', '', get_comment_author() ); ?><?php comment_author(); ?> <span class="isauthor" title="<?php esc_attr_e('Author', 'akina'); ?>">博主</span></a></h4>
 								</div>
 								<?php comment_reply_link(array_merge($args, array('depth' => $depth, 'max_depth' => $args['max_depth']))); ?>
 								<div class="right">
@@ -454,7 +457,19 @@ function get_link_items(){
   return $result;
 }
 
-
+/*
+ * Ajax实时获取Gravatar头像
+ */
+add_action( 'init', 'ajax_avatar_url' );
+function ajax_avatar_url() {
+	if( $_GET['action'] == 'ajax_avatar_get' && 'GET' == $_SERVER['REQUEST_METHOD'] ) {
+		$email = $_GET['email'];
+		echo get_avatar_url( $email, array( 'size'=>54 ) ); // size 指定头像大小
+		die();
+	}else{ 
+		return; 
+	}
+}
 
 /*
  * Gravatar头像使用中国服务器
@@ -596,9 +611,7 @@ function enable_more_buttons($buttons) {
 add_filter("mce_buttons_3", "enable_more_buttons");
 // 下载按钮
 function download($atts, $content = null) {  
-return '<a class="download" href="'.$content.'" rel="external"  
-target="_blank" title="下载地址">  
-<span><i class="iconfont down">&#xe69f;</i>Download</span></a>';}  
+return '<a class="download" href="'.$content.'" rel="external" target="_blank" title="下载地址"><span><i class="iconfont down">&#xe69f;</i>Download</span></a>';}  
 add_shortcode("download", "download"); 
 
 add_action('after_wp_tiny_mce', 'bolo_after_wp_tiny_mce');  
@@ -618,20 +631,20 @@ function demo($atts, $content = null) {
 add_shortcode("demo", "demo");
 
 /*
- * 代码高亮功能
+ * 代码高亮文件路径
  */
 function add_prism() {
-        wp_register_style(
-            'prismCSS', 
-            get_stylesheet_directory_uri() . '/inc/css/prism.css'
-         );
-          wp_register_script(
-            'prismJS',
-            get_stylesheet_directory_uri() . '/inc/js/prism.js'
-         );
-        wp_enqueue_style('prismCSS');
-        wp_enqueue_script('prismJS');
-    }
+    wp_register_style(
+        'prismCSS', 
+        get_stylesheet_directory_uri() . '/inc/css/prism.css'
+    );
+    wp_register_script(
+        'prismJS',
+        get_stylesheet_directory_uri() . '/inc/js/prism.js'
+    );
+    wp_enqueue_style('prismCSS');
+    wp_enqueue_script('prismJS');
+}
 add_action('wp_enqueue_scripts', 'add_prism');
 
 // 自定义代码高亮按钮
@@ -640,8 +653,8 @@ function appthemes_add_quicktags() {
 ?>
     <script type="text/javascript">
         QTags.addButton( 'eg_hlAll', '*ALL', '<pre class="language-"><code class="language-">', '</code></pre>', 'h', 'defual highlight');
-				QTags.addButton( 'eg_hlPHP', '*PHP', '<pre class="language-php"><code class="language-php">', '</code></pre>', 'z', 'php highlight');
-				QTags.addButton( 'eg_hlHTML', '*HTML', '<pre class="language-html"><code class="language-html">', '</code></pre>', 'z', 'HTML highlight');
+		QTags.addButton( 'eg_hlPHP', '*PHP', '<pre class="language-php"><code class="language-php">', '</code></pre>', 'z', 'php highlight');
+		QTags.addButton( 'eg_hlHTML', '*HTML', '<pre class="language-html"><code class="language-html">', '</code></pre>', 'z', 'HTML highlight');
         QTags.addButton( 'eg_hlCSS', '*CSS', '<pre class="language-css"><code class="language-css">', '</code></pre>', 'c', 'css highlight');
         QTags.addButton( 'eg_hlJava', '*JavaScript', '<pre class="language-JavaScript"><code class="language-JavaScript">', '</code></pre>', 'h', 'JavaScript highlight');
         QTags.addButton( 'demo', '演示按钮', "[demo]演示地址[/demo]" );
@@ -693,49 +706,95 @@ function custom_html() {
 }
 add_action('login_footer', 'custom_html');
 
+//禁用sw.org
+function remove_dns_prefetch( $hints, $relation_type ) {
+	if ( 'dns-prefetch' === $relation_type ) {
+		return array_diff( wp_dependencies_unique_hosts(), $hints );
+	}
+	return $hints;
+}
+add_filter( 'wp_resource_hints', 'remove_dns_prefetch', 10, 2 );
+
+//禁用谷歌字体
+function scilper_disable_open_sans( $translations, $text, $context, $domain ) {
+  if ( 'Open Sans font: on or off' == $context && 'on' == $text ) {
+    $translations = 'off';
+  }
+  return $translations;
+}
+add_filter( 'gettext_with_context', 'scilper_disable_open_sans', 888, 4 );
+
+//使用昵称替换用户名，通过用户ID进行查询
+function scilper_author_link( $link, $author_id) {
+    global $wp_rewrite;
+    $author_id = (int) $author_id;
+    $link = $wp_rewrite->get_author_permastruct();
+    if ( empty($link) ) {
+        $file = home_url( '/' );
+        $link = $file . '?author=' . $author_id;
+    } else {
+        $link = str_replace('%author%', $author_id, $link);
+        $link = home_url( user_trailingslashit( $link ) );
+    }
+    return $link;
+}
+add_filter( 'author_link', 'scilper_author_link', 10, 2 );
+
+function scilper_author_link_request( $query_vars ) {
+    if ( array_key_exists( 'author_name', $query_vars ) ) {
+        global $wpdb;
+        $author_id=$query_vars['author_name'];
+        if ( $author_id ) {
+            $query_vars['author'] = $author_id;
+            unset( $query_vars['author_name'] );    
+        }
+    }
+    return $query_vars;
+}
+add_filter( 'request', 'scilper_author_link_request' );
 
 /*
  *	文章页面导航
  */
 if ( akina_option('post_nav') == 'yes') {
- function article_index($content) {
-		 $matches = array();
-		 $ul_li = '';
-		 //匹配出 h2、h3 标题
-		 $rh = "/<h[23]>(.*)<\/h[23]>/im";
-		 $h2_num = 0;
-		 $h3_num = 0;
-		 //判断是否是文章页
-		 if(is_single() || !is_tag()){
-					if(preg_match_all($rh, $content, $matches)) {
-						 // 找到匹配的结果
-						 foreach($matches[1] as $num => $title) {
-								 $hx = substr($matches[0][$num], 0, 3);      //前缀，判断是 h2 还是 h3
-								 $start = stripos($content, $matches[0][$num]);  //匹配每个标题字符串的起始位置
-								 $end = strlen($matches[0][$num]);       //匹配每个标题字符串的结束位置
-								 if($hx == "<h2"){
-										 $h2_num += 1; //记录 h2 的序列，此效果请查看百度百科中的序号，如 1.1、1.2 中的第一位数
-										 $h3_num = 0;
-										 // 文章标题添加 id，便于目录导航的点击定位
-										 $content = substr_replace($content, '<h2 id="h2-'.$num.'">'.$title.'</h2>',$start,$end);
-										 $title = preg_replace('/<.+>/', "", $title); //将 h2 里面的 a 链接或者其他标签去除，留下文字
-										 $ul_li .= '<li class="h2_nav"><a href="#h2-'.$num.'" class="tooltip" title="'.$title.'">'.$title."</a></li>\n";
-								 }else if($hx == "<h3"){
-										 $h3_num += 1; //记录 h3 的序列，此熬过请查看百度百科中的序号，如 1.1、1.2 中的第二位数
-										 $content = substr_replace($content, '<h3 id="h3-'.$num.'">'.$title.'</h3>',$start,$end);
-										 $title = preg_replace('/<.+>/', "", $title); //将 h3 里面的 a 链接或者其他标签去除，留下文字
-										 $ul_li .= '<li class="h3_nav"><a href="#h3-'.$num.'" class="tooltip" title="'.$title.'">'.$title."</a></li>\n";
-								 }   
-						 }
+ 	function article_index($content) {
+		$matches = array();
+		$ul_li = '';
+		//匹配出 h2、h3 标题
+		$rh = "/<h[23]>(.*)<\/h[23]>/im";
+		$h2_num = 0;
+		$h3_num = 0;
+		//判断是否是文章页
+		if(is_single() || !is_tag()){
+			if(preg_match_all($rh, $content, $matches)) {
+				// 找到匹配的结果
+				foreach($matches[1] as $num => $title) {
+					$hx = substr($matches[0][$num], 0, 3);      //前缀，判断是 h2 还是 h3
+					$start = stripos($content, $matches[0][$num]);  //匹配每个标题字符串的起始位置
+					$end = strlen($matches[0][$num]);       //匹配每个标题字符串的结束位置
+					if($hx == "<h2"){
+						$h2_num += 1; //记录 h2 的序列，此效果请查看百度百科中的序号，如 1.1、1.2 中的第一位数
+						$h3_num = 0;
+						// 文章标题添加 id，便于目录导航的点击定位
+						$content = substr_replace($content, '<h2 id="h2-'.$num.'">'.$title.'</h2>',$start,$end);
+						$title = preg_replace('/<.+>/', "", $title); //将 h2 里面的 a 链接或者其他标签去除，留下文字
+						$ul_li .= '<li class="h2_nav"><a href="#h2-'.$num.'" class="tooltip" title="'.$title.'">'.$title."</a></li>\n";
+					}else if($hx == "<h3"){
+						$h3_num += 1; //记录 h3 的序列，此熬过请查看百度百科中的序号，如 1.1、1.2 中的第二位数
+						$content = substr_replace($content, '<h3 id="h3-'.$num.'">'.$title.'</h3>',$start,$end);
+						$title = preg_replace('/<.+>/', "", $title); //将 h3 里面的 a 链接或者其他标签去除，留下文字
+						$ul_li .= '<li class="h3_nav"><a href="#h3-'.$num.'" class="tooltip" title="'.$title.'">'.$title."</a></li>\n";
+					}   
 				 }
-				 // 将目录拼接到文章
-				 $content =  $content . "<div class=\"post_nav\"><ul class=\"post_nav_content\">\n" . $ul_li . "</ul></div>\n";
-				 return $content;
-		 }else if(is_home()){
-				 return $content;
-		 }
- }
- add_filter( "the_content", "article_index" );
+		 	}
+			// 将目录拼接到文章
+			$content =  $content . "<div class=\"post_nav\"><ul class=\"post_nav_content\">\n" . $ul_li . "</ul></div>\n";
+			return $content;
+		}else if(is_home()){
+			return $content;
+		}
+	}
+	add_filter( "the_content", "article_index" );
 }
 
 
@@ -743,27 +802,37 @@ if ( akina_option('post_nav') == 'yes') {
  * 图片自动添加alt属性
  */
 function img_alt( $imgalt ){
-        global $post;
-        $title = $post->post_title;
-        $imgUrl = "<img\s[^>]*src=(\"??)([^\" >]*?)\\1[^>]*>";
-        if(preg_match_all("/$imgUrl/siU",$imgalt,$matches,PREG_SET_ORDER)){
-                if( !empty($matches) ){
-                        for ($i=0; $i < count($matches); $i++){
-                                $tag = $url = $matches[$i][0];
-                                $judge = '/alt=/';
-                                preg_match($judge,$tag,$match,PREG_OFFSET_CAPTURE);
-                                if( count($match) < 1 )
-                                $altURL = ' alt="'.$title.'" ';
-                                $url = rtrim($url,'>');
-                                $url .= $altURL.'>';
-                                $imgalt = str_replace($tag,$url,$imgalt);
-                        }
-                }
+    global $post;
+    $title = $post->post_title;
+    $imgUrl = "<img\s[^>]*src=(\"??)([^\" >]*?)\\1[^>]*>";
+    if(preg_match_all("/$imgUrl/siU",$imgalt,$matches,PREG_SET_ORDER)){
+        if( !empty($matches) ){
+            for ($i=0; $i < count($matches); $i++){
+                $tag = $url = $matches[$i][0];
+                $judge = '/alt=/';
+                preg_match($judge,$tag,$match,PREG_OFFSET_CAPTURE);
+                if( count($match) < 1 )
+                $altURL = ' alt="'.$title.'" ';
+                $url = rtrim($url,'>');
+                $url .= $altURL.'>';
+                $imgalt = str_replace($tag,$url,$imgalt);
+            }
         }
-        return $imgalt;
+    }
+    return $imgalt;
 }
-
 add_filter( 'the_content','img_alt');
+
+//去掉img无用参数
+function fanly_remove_images_attribute( $html ) {
+	//$html = preg_replace( '/(width|height)="\d*"\s/', "", $html );
+	$html = preg_replace( '/width="(\d*)"\s+height="(\d*)"\s+class=\"[^\"]*\"/', "", $html );
+	$html = preg_replace( '/  /', "", $html );
+	return $html;
+}
+add_filter( 'post_thumbnail_html', 'fanly_remove_images_attribute', 10 );
+add_filter( 'image_send_to_editor', 'fanly_remove_images_attribute', 10 );
+
 
 /*
  * 评论邮件回复
@@ -820,7 +889,7 @@ add_action('comment_post', 'comment_mail_notify');
 function wpso_wechet_comment_notify($comment_id) {
     $text = get_bloginfo('name'). '上有新的评论';  
     $comment = get_comment($comment_id);
-		$wpso_wenotify_key = akina_option('wpso_wenotify_key');
+	$wpso_wenotify_key = akina_option('wpso_wenotify_key');
     $desp = $comment->comment_author.' 同学在文章《'.get_the_title($comment->comment_post_ID).'》中给您的留言为：'.$comment->comment_content;
     $key = $wpso_wenotify_key;  
     $postdata = http_build_query(  

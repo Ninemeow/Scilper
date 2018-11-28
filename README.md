@@ -4,20 +4,34 @@ WordPress Theme
 
 ![Scilper](http://images.skillcat.me/image/Scilper.jpg)
 
-Wordpress Theme Scilper 是基于 Akina 和 Siren 主题综合扩展而来的！
-首先膜拜一下[Fuzzz](http://fui.im/) 和 [路易](https://www.cssplus.org)两位大佬写出这么棒（diao）的主题（[查看原始主题](https://github.com/louie-senpai/Siren) ）。<br>
-再次鸣谢[keith](http://skyarea.cn) 结合出[ASky](http://skyarea.cn/archives/466) 这么棒的主题，真是一个比一个会玩，厉害...<br>
-这次版本属于综合扩展版本，其修改也只是为了增加好玩而简单的效果！
+> Wordpress Theme [Scilper](http://blog.skillcat.me/wordpress/271.html) 是基于 Akina 和 Siren 主题综合扩展而来的！
+> 首先膜拜一下[Fuzzz](http://fui.im/) 和 [路易](https://www.cssplus.org)两位大佬写出这么棒（diao）的主题（[查看原始主题](https://github.com/louie-senpai/Siren) ）。<br>
+> 再次鸣谢[keith](http://skyarea.cn) 结合出[ASky](http://skyarea.cn/archives/466) 这么棒的主题，真是一个比一个会玩，厉害...<br>
+> 这次版本属于综合扩展版本，其修改也只是为了增加好玩而简单的效果！
 
-最新版本：2.0.1<br>
+### 最新版本：2.0.2.181126<br>
 
 主要修改：<br>
+- 2018-11-26<br>
+当前版本：2.0.2<br>
+增加Hitokoto（一言）至第一屏info显示区域（后台开启）<br>
+给鼠标添加点击特效❤图案（后台开启）<br>
+评论Ajax实时获取Gravatar头像<br>
+修复主题不支持[Eaplayer播放器](https://www.cssplus.org/eaplayer-for-wordpress.html "Louie大佬的Eaplayer播放器")问题(依旧支持[Poiplayer](https://github.com/louie-senpai/PoiPlayer))<br>
+博主描述做打字特效（页面底部）<br>
+~~关于Music简码还是使用Eaplayer文章简码吧，有点问题(囧)~~<br>
+修复作者昵称为中文时链接报错问题<br>
+修复作者链接新窗口打开<br>
+修改Comments布局并结合一言显示至评论框<br>
+禁用谷歌字体<br>
+一些不起眼的改动..<br>
+
+#### 历史版本：<br>
 - 2018-09-28<br>
 当前版本：2.0.1<br>
 修复移动端首屏不显示info问题（好多小伙伴问，那就改吧）<br>
 修复links页面获取favicon 404时不显示问题（给个默认图）<br>
 更改Loading动画为心跳❤<br>
-下一版本可能会在主题中结合每日一语、Music简码（拭目以待..）<br>
 - 2018-08-07<br>
 当前版本：2.0<br>
 增加文章目录（后台可开启）<br>
@@ -50,7 +64,7 @@ Wordpress Theme Scilper 是基于 Akina 和 Siren 主题综合扩展而来的！
 ~~尝试修复ajax点击一篇文章返回上一页后banner图消失问题（正在修复..）~~<br>
 修复移动端图片文章css显示问题<br>
 - 2017-05-29<br>
-当前版本：1.0.1<br>
+历史版本：1.0.1<br>
 增加网站底部ICP备案号选填功能<br>
 增加首页第一屏气泡动画（后台可选择）<br>
 添加网站加载读取时间（后台可关闭）<br>
@@ -58,8 +72,8 @@ Wordpress Theme Scilper 是基于 Akina 和 Siren 主题综合扩展而来的！
 修改自身Loading加载动画为圆形效果<br>
 还以一些小的...<br>
 
-- Akina-Siren<br>
-当前版本：1.0.0<br>
+#### Akina-Siren
+原始版本：1.0.0<br>
 融合akina的评论模板，支持添加表情<br>
 作品列表替换为akina最新样式并修复移动端第一次加载不显示问题<br>
 首页第一屏添加波浪动画（后台可关闭）<br>
@@ -76,4 +90,4 @@ Wordpress Theme Scilper 是基于 Akina 和 Siren 主题综合扩展而来的！
 ## 注意事项
 GIT下载文件夹默认带有master后缀，解压后记得把文件夹名改回 `Scilper`，并确认主题路径为 `/wp-content/themes/`；<br>
 
-请留意主题说明里的其他注意事项。
+请留意[主题说明](http://blog.skillcat.me/wordpress/271.html#h3-5)里的其他注意事项。
