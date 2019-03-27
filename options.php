@@ -589,8 +589,29 @@ function optionsframework_options() {
 	
 	//聚焦图链
 	$options[] = array(
-		'name' => __('聚焦图', 'options_framework_theme'),
+		'name' => __('聚焦信息', 'options_framework_theme'),
 		'type' => 'heading' );
+
+	$options[] = array(
+		'name' => __('开启公告', 'options_framework_theme'),
+		'desc' => __('默认不显示，勾选开启', 'options_framework_theme'),
+		'id' => 'head_notice',
+		'std' => '0',
+		'type' => 'checkbox');	
+
+	$options[] = array(
+		'name' => __('公告内容', 'options_framework_theme'),
+		'desc' => __('公告内容，文字超出142个字节将会被滚动显示（移动端无效），一个汉字 = 3字节，一个字母 = 1字节，自己计算吧', 'options_framework_theme'),
+		'id' => 'notice_title',
+		'std' => '欢迎来到我的小站',
+		'type' => 'text');
+	
+	$options[] = array(
+		'name' => __('公告内容尾部光标文字', 'options_framework_theme'),
+		'desc' => __('公告内容尾部光标文字，计入上面公告内容字数内', 'options_framework_theme'),
+		'id' => 'notice-cursor',
+		'std' => '',
+		'type' => 'text');
 
 	$options[] = array(
 		'name' => __('是否开启聚焦', 'options_framework_theme'),
@@ -684,27 +705,6 @@ function optionsframework_options() {
 		'type' => 'checkbox');
 
 	$options[] = array(
-		'name' => __('开启公告', 'options_framework_theme'),
-		'desc' => __('默认不显示，勾选开启', 'options_framework_theme'),
-		'id' => 'head_notice',
-		'std' => '0',
-		'type' => 'checkbox');	
-
-	$options[] = array(
-		'name' => __('公告内容', 'options_framework_theme'),
-		'desc' => __('公告内容，文字超出142个字节将会被滚动显示（移动端无效），一个汉字 = 3字节，一个字母 = 1字节，自己计算吧', 'options_framework_theme'),
-		'id' => 'notice_title',
-		'std' => '欢迎来到我的小站',
-		'type' => 'text');
-	
-	$options[] = array(
-		'name' => __('公告内容尾部光标文字', 'options_framework_theme'),
-		'desc' => __('公告内容尾部光标文字，计入上面公告内容字数内', 'options_framework_theme'),
-		'id' => 'notice-cursor',
-		'std' => '',
-		'type' => 'text');
-
-	$options[] = array(
 		'name' => __('首页不显示的分类文章', 'options_framework_theme'),
 		'desc' => __('填写分类ID，多个用英文“ , ”分开', 'options_framework_theme'),
 		'id' => 'classify_display',
@@ -755,7 +755,7 @@ function optionsframework_options() {
 
 	$options[] = array(
 		'name' => __('开启Prism代码高亮支持', 'options_framework_theme'),
-		'desc' => __('仅支持Prism.js的高亮插件，如果你用使用该插件且开启了Pjax，请勾选此项，这不是插件功能，只是帮助插件JS文件进入Pjax重载', 'options_framework_theme'),
+		'desc' => __('仅支持Prism.js的高亮插件，如果你用使用该插件且开启了Pjax，请勾选此项，!这不是插件功能，只是帮助插件JS文件进入Pjax重载', 'options_framework_theme'),
 		'id' => 'open_prism_codelamp',
 		'std' => '0',
 		'type' => 'checkbox');	

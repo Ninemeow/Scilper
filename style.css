@@ -5,7 +5,7 @@ Theme URI: http://blog.skillcat.me/wordpress/271.html
 Author: Ninemeow
 Author URI: http://blog.skillcat.me
 Description: Akina-Siren 主题分支（主题地址 http://blog.skillcat.me/wordpress/271.html）
-Version: 2.0.2
+Version: 2.0.3
 Text Domain: Scilper
 Tags: Scilper, Akina-Siren（综合扩展版）, Siren, Akina, Wordpress主题
 */
@@ -390,12 +390,11 @@ blockquote {
 
 @media (max-width: 860px) {
 	blockquote {
-    margin: 0;
-    padding: 15px 15px;
-    background: #F9F9F9;
-    position: relative;
-}
-	
+	    margin: 0;
+	    padding: 15px 15px;
+	    background: #F9F9F9;
+	    position: relative;
+	}
 }
 
 blockquote:before {
@@ -428,7 +427,7 @@ address {
 
 pre {
     background: #F8F8F8;
-    font: 15px/22px "microsoft jhenghei","Arial",Sans-Serif;
+    font: 15px/22px Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
     line-height: 1.6;
     margin-bottom: 1.6em;
     max-width: 100%;
@@ -510,12 +509,8 @@ ol {
     margin: 0 0 1.5em 3em;
 }
 
-ul {
-    list-style: disc;
-}
-
-ol {
-    list-style: decimal;
+ul,ol {
+    list-style: none;
 }
 
 li > ul,
@@ -722,11 +717,11 @@ a:active {
 
 .wrapper {
     animation: fade-in;
-/*动画名称*/
+	/*动画名称*/
     animation-duration: 0.5s;
-/*动画持续时间*/
+	/*动画持续时间*/
     -webkit-animation: fade-in 0.5s;
-/*针对webkit内核*/
+	/*针对webkit内核*/
 }
 /*视频*/
 #bgvideo {
@@ -881,8 +876,9 @@ a:active {
 
 .single-center .single-header h1.entry-title {
     margin: 0;
-    font-size: 32px;
     width: 100%;
+    font-size: 38px;
+    text-shadow: 2px 3px 8px #000;
 }
 
 .single-center .entry-census {
@@ -1780,11 +1776,12 @@ i.iconfont.hotpost {
 		color: #E2684A;
 }
 
-.entry-content code {
+/*.entry-content code {
+	margin: 0 4px;
+    padding: 2px 4px;
     background: #525252;
     color: #FFFFFF;
     font-family: miranafont,"Hiragino Sans GB",STXihei,"Microsoft YaHei",SimSun,sans-serif;
-    padding: 4px 8px;
     border-radius: 2px;
 }
 
@@ -1795,7 +1792,7 @@ i.iconfont.hotpost {
 
 .entry-content a:hover {
     color: #72C5A6;
-}
+}*/
 
 h1.entry-title {
     font-size: 24px;
@@ -2868,6 +2865,7 @@ header.page-header {
     width: 32%;
     float: left;
     border: 1px solid #ECECEC;
+    border-radius: 4px;
     padding: 10px 30px;
     margin: 4px 4px;
     position: relative;
@@ -2877,8 +2875,9 @@ header.page-header {
 }
 
 .linksimage {
-	width: 16px;
-	height: 16px;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
 }
 
 span.sitename {
@@ -2986,12 +2985,16 @@ span.page-numbers.current {
 	font-family:miranafont,"Hiragino Sans GB","Microsoft YaHei",SimSun,sans-serif;
 }
 .author-updown {
-    margin-bottom: 10px;
+    margin: 10px auto 20px;
 }
 
 a.page-numbers {
     color: #ABABAB;
     padding: 0 5px;
+}
+
+.cancel-comment-reply {
+	transform: translateY(-20px);
 }
 
 .comments {
@@ -3081,6 +3084,13 @@ font-family: miranafont,"Hiragino Sans GB",STXihei,"Microsoft YaHei",SimSun,sans
 
 .graybar {
 	display:none
+}
+
+.depth-1 {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	border-right: 1px solid rgba(0,0,0,.05);
+	border-radius: 5px;
 }
 
 .comment .contents {
@@ -3223,7 +3233,7 @@ img.wp-smiley {
     position: relative;
     display: inline-block;
     width: 100%;
-	margin-bottom: 5px;
+	margin-bottom: 40px;
 }
 
 .smilies {
@@ -3232,26 +3242,6 @@ img.wp-smiley {
 	right: 0;
 	background-color: #fff;
 }
-
-
-
-/*a.smli-button {
-	position: absolute;
-	top: 10px;
-	right: 0;
-	cursor:pointer
-}*/
-
-
-/*.arrow-left {
-width: 0;
-height: 0;
-display: block;
-float: right;
-margin-top: -35px;
-border-left: 20px solid transparent;
-border-bottom: 20px solid #FFFFFF;
-}*/
 
 .comment .commeta {
     font-family: PingFang SC,Hiragino Sans GB,Microsoft YaHei,STHeiti,WenQuanYi Micro Hei,Helvetica,Arial,sans-serif;
@@ -3361,8 +3351,12 @@ border-bottom: 20px solid #FFFFFF;
 }
 
 .comment .children {
-    padding-left: 3.3em;
+    padding-left: 0;
     margin: 0;
+}
+
+.children .depth-2 {
+	margin-left: 2.3em;
 }
 
 .comment .children .profile {
@@ -3401,10 +3395,6 @@ border-bottom: 20px solid #FFFFFF;
         display: none
     }
 
-    .comment .children {
-        padding-left: 2em;
-        margin: 0;
-    }
 }
 
 .comment-respond {
@@ -3428,7 +3418,7 @@ border-bottom: 20px solid #FFFFFF;
 
 .visitor {
 	float: left;
-	margin-right: 2.6%;
+	margin-right: 1.5rem;
 }
 
 .visitor img {
@@ -3440,7 +3430,7 @@ border-bottom: 20px solid #FFFFFF;
 	font-family: miranafont, "Hiragino Sans GB", STXihei, "Microsoft YaHei", SimSun, sans-serif;
 	font-size: 14px;
 	float: left;
-	width: 27.3%;
+	width: 16.776em;
 	margin: 0;
 	padding: 16px 25px 15px;
 	color: #535a63;
@@ -3452,7 +3442,7 @@ border-bottom: 20px solid #FFFFFF;
 .comment-respond input {
 	margin-bottom: 5px;
 	border: 1px solid #DDE6EA;
-	margin-right: 2.6%;
+	margin-right: 1.608em;
 }
 
 .comment-respond input:last-of-type {
@@ -3522,7 +3512,9 @@ border-bottom: 20px solid #FFFFFF;
 }
 
 .comment-respond input[type='submit']:hover {
-	background: #DDE6EA;
+	background: none;
+	border-width: 1px;
+	border-style: solid;
 	-webkit-animation: btn-pudding 1s linear;
 	animation: btn-pudding 1s linear;
 }
@@ -3552,7 +3544,6 @@ border-bottom: 20px solid #FFFFFF;
 @media (max-width: 1080px) {
     .comment-respond {
         width: 100%;
-        padding: 0 6.39%;
         max-width: 1245px;
     }
 }
@@ -5891,11 +5882,6 @@ i.iconfont.down , i.iconfont.demo {
 /*定义滑块 内阴影+圆角*/  
 ::-webkit-scrollbar-thumb {
     background-color: #69d2e7;
-}
-
-.cd-top:hover {
-    /*-webkit-animation: btn-pudding 2s linear;
-    animation: btn-pudding 2s linear;*/
 }
 
 /*360度旋转*/

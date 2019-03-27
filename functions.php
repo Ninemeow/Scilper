@@ -7,7 +7,7 @@
  * @package Akina
  */
  
-define( 'SIREN_VERSION', '2.0.2' );
+define( 'SIREN_VERSION', '2.0.3' );
 
 if ( !function_exists( 'akina_setup' ) ) :
 /**
@@ -22,7 +22,6 @@ if ( !function_exists( 'optionsframework_init' ) ) {
 	define( 'OPTIONS_FRAMEWORK_DIRECTORY', get_template_directory_uri() . '/inc/' );
 	require_once dirname( __FILE__ ) . '/inc/options-framework.php';
 }
-
 
 function akina_setup() {
 	/*
@@ -133,7 +132,6 @@ function akina_setup() {
 	 return array();
 	 }
 	}
-	
 
 	/*
 	 * 评论表情
@@ -194,7 +192,6 @@ function akina_setup() {
 		 
 	}
 	add_action('init', 'init_akinasmilie', 5); 
-
 
 	/*
 	 * WordPress 后台回复评论插入表情
@@ -429,14 +426,16 @@ function specs_zan(){
  * 友情链接
  */
 function get_the_link_items($id = null){
-  $default_ico = get_template_directory_uri().'/images/none.png'; 
   $bookmarks = get_bookmarks('orderby=date&category=' .$id );
+  $default_levek = get_template_directory_uri().'/images/none.png';
+  $loading_levek = get_template_directory_uri().'/images/level/loading.ajax-links_levek.svg';
   $output = '';
   if ( !empty($bookmarks) ) {
       $output .= '<ul class="link-items fontSmooth">';
       foreach ($bookmarks as $bookmark) {
-        $output .=  '<li class="link-item"><a class="link-item-inner effect-apollo" href="' . $bookmark->link_url . '" title="' . $bookmark->link_description . '" target="_blank" >
-		<img class="linksimage" src="'. $bookmark->link_url.'/favicon.ico" onerror="javascript:this.src=\'' . $default_ico . '\'" /><span class="sitename">'. $bookmark->link_name .'</span><div class="linkdes">'. ''. $bookmark->link_description .'</div></a></li>';
+      	if (empty($bookmark->link_description)) $bookmark->link_description = '这家伙好懒，什么都没写╮(╯▽╰)╭';
+      	if (empty($bookmark->link_image)) $bookmark->link_image = get_template_directory_uri() .'/images/none.png';
+        $output .=  '<li class="link-item"><a class="link-item-inner effect-apollo" href="' . $bookmark->link_url . '" title="' . $bookmark->link_description . '" target="_blank"><img class="linksimage" src="' . $bookmark->link_image . '" onerror="javascript:this.src=\'' . $default_levek . '\'" /><span class="sitename">'. $bookmark->link_name .'</span><div class="linkdes">'. ''. $bookmark->link_description .'</div></a></li>';
       }
       $output .= '</ul>';
   }
@@ -590,11 +589,10 @@ function akina_infinite_scroll_render() {
   }
 }
 
-
 /*
  * 编辑器增强
  */
-function enable_more_buttons($buttons) { 
+function enable_more_buttons($buttons) {
 	$buttons[] = 'hr'; 
 	$buttons[] = 'del'; 
 	$buttons[] = 'sub'; 
@@ -609,60 +607,23 @@ function enable_more_buttons($buttons) {
 	return $buttons;
 } 
 add_filter("mce_buttons_3", "enable_more_buttons");
-// 下载按钮
-function download($atts, $content = null) {  
-return '<a class="download" href="'.$content.'" rel="external" target="_blank" title="下载地址"><span><i class="iconfont down">&#xe69f;</i>Download</span></a>';}  
-add_shortcode("download", "download"); 
-
-add_action('after_wp_tiny_mce', 'bolo_after_wp_tiny_mce');  
-function bolo_after_wp_tiny_mce($mce_settings) {  
-?>  
-<script type="text/javascript">  
-QTags.addButton( 'download', '下载按钮', "[download]下载地址[/download]" );
-function bolo_QTnextpage_arg1() {
-}  
-</script>  
-<?php } 
-
-// 演示按钮
-function demo($atts, $content = null) {  
-	return '<a class="demo" href="'.$content.'" rel="external"  target="_blank" title="演示地址"><span><i class="iconfont down">&#xe73d;</i>查看演示</span></a>';
-}  
-add_shortcode("demo", "demo");
 
 /*
  * 代码高亮文件路径
  */
-function add_prism() {
+function add_highlight() {
     wp_register_style(
-        'prismCSS', 
-        get_stylesheet_directory_uri() . '/inc/css/prism.css'
+        'highlightCSS', 
+        get_stylesheet_directory_uri() . '/inc/css/highlight.css'
     );
     wp_register_script(
-        'prismJS',
-        get_stylesheet_directory_uri() . '/inc/js/prism.js'
+        'highlightJS',
+        get_stylesheet_directory_uri() . '/inc/js/highlight.pack.js'
     );
-    wp_enqueue_style('prismCSS');
-    wp_enqueue_script('prismJS');
+    wp_enqueue_style('highlightCSS');
+    wp_enqueue_script('highlightJS');
 }
-add_action('wp_enqueue_scripts', 'add_prism');
-
-// 自定义代码高亮按钮
-function appthemes_add_quicktags() {
-    if (wp_script_is('quicktags')){
-?>
-    <script type="text/javascript">
-        QTags.addButton( 'eg_hlAll', '*ALL', '<pre class="language-"><code class="language-">', '</code></pre>', 'h', 'defual highlight');
-		QTags.addButton( 'eg_hlPHP', '*PHP', '<pre class="language-php"><code class="language-php">', '</code></pre>', 'z', 'php highlight');
-		QTags.addButton( 'eg_hlHTML', '*HTML', '<pre class="language-html"><code class="language-html">', '</code></pre>', 'z', 'HTML highlight');
-        QTags.addButton( 'eg_hlCSS', '*CSS', '<pre class="language-css"><code class="language-css">', '</code></pre>', 'c', 'css highlight');
-        QTags.addButton( 'eg_hlJava', '*JavaScript', '<pre class="language-JavaScript"><code class="language-JavaScript">', '</code></pre>', 'h', 'JavaScript highlight');
-        QTags.addButton( 'demo', '演示按钮', "[demo]演示地址[/demo]" );
-    </script>
-<?php
-    }
-}
-add_action( 'admin_print_footer_scripts', 'appthemes_add_quicktags' );
+add_action('wp_enqueue_scripts', 'add_highlight');
 
 /*
  * 后台登录页
@@ -777,12 +738,12 @@ if ( akina_option('post_nav') == 'yes') {
 						$h3_num = 0;
 						// 文章标题添加 id，便于目录导航的点击定位
 						$content = substr_replace($content, '<h2 id="h2-'.$num.'">'.$title.'</h2>',$start,$end);
-						$title = preg_replace('/<.+>/', "", $title); //将 h2 里面的 a 链接或者其他标签去除，留下文字
+						$title = preg_replace('/#.*?#/', "", $title); //将 h2 里面的 a 链接或者其他标签去除，留下文字
 						$ul_li .= '<li class="h2_nav"><a href="#h2-'.$num.'" class="tooltip" title="'.$title.'">'.$title."</a></li>\n";
 					}else if($hx == "<h3"){
 						$h3_num += 1; //记录 h3 的序列，此熬过请查看百度百科中的序号，如 1.1、1.2 中的第二位数
 						$content = substr_replace($content, '<h3 id="h3-'.$num.'">'.$title.'</h3>',$start,$end);
-						$title = preg_replace('/<.+>/', "", $title); //将 h3 里面的 a 链接或者其他标签去除，留下文字
+						$title = preg_replace('/#.*?#/', "", $title); //将 h3 里面的 a 链接或者其他标签去除，留下文字
 						$ul_li .= '<li class="h3_nav"><a href="#h3-'.$num.'" class="tooltip" title="'.$title.'">'.$title."</a></li>\n";
 					}   
 				 }
@@ -833,7 +794,6 @@ function fanly_remove_images_attribute( $html ) {
 add_filter( 'post_thumbnail_html', 'fanly_remove_images_attribute', 10 );
 add_filter( 'image_send_to_editor', 'fanly_remove_images_attribute', 10 );
 
-
 /*
  * 评论邮件回复
  */
@@ -847,41 +807,64 @@ function comment_mail_notify($comment_id){
     $to = trim(get_comment($parent_id)->comment_author_email);
     $subject = '你在 [' . get_option("blogname") . '] 的留言有了回应';
     $message = '
-    <table border="1" cellpadding="0" cellspacing="0" width="600" align="center" style="border-collapse: collapse; border-style: solid; border-width: 1;border-color:#ddd;">
-	<tbody>
-          <tr>
-            <td>
-				<table align="center" border="0" cellpadding="0" cellspacing="0" width="600" height="48" >
-                    <tbody><tr>
-                        <td width="100" align="center" style="border-right:1px solid #ddd;">
-                            <a href="'.home_url().'/" target="_blank">'. get_option("blogname") .'</a></td>
-                        <td width="300" style="padding-left:20px;"><strong>您有一条来自 <a href="'.home_url().'" target="_blank" style="color:#6ec3c8;text-decoration:none;">' . get_option("blogname") . '</a> 的留言回复！</strong></td>
-						</tr>
-					</tbody>
-				</table>
-			</td>
-          </tr>
-          <tr>
-            <td  style="padding:15px;"><p><strong>' . trim(get_comment($parent_id)->comment_author) . '</strong> 同学, 您好!</span>
-              <p>您在《' . get_the_title($comment->comment_post_ID) . '》的留言为:</p><p style="border-left:3px solid #ddd;padding-left:1rem;color:#999;">'
-        . trim(get_comment($parent_id)->comment_content) . '</p><p>
-              ' . trim($comment->comment_author) . ' 给您的回复:</p><p style="border-left:3px solid #ddd;padding-left:1rem;color:#999;">'
-        . trim($comment->comment_content) . '</p>
-        <center ><a href="' . htmlspecialchars(get_comment_link($parent_id)) . '" target="_blank" style="background-color:#6ec3c8; border-radius:10px; display:inline-block; color:#fff; padding:15px 20px 15px 20px; text-decoration:none;margin-top:20px; margin-bottom:10px;">点击查看完整内容</a></center>
-		<center><p style="font-size:0.8rem; color:#999;">(此邮件由系统自动发出，请勿直接回复)</p></center>
-</td>
-          </tr>
-          <tr>
-            <td align="center" valign="center" height="38" style="font-size:0.8rem; color:#999;">Copyright © '.get_option("blogname").'</td>
-          </tr>
-		  </tbody>
-  </table>';
+	    <table border="1" cellpadding="0" cellspacing="0" width="600" align="center" style="border-collapse: collapse; border-style: solid; border-width: 1;border-color:#ddd;">
+			<tbody>
+	          <tr>
+	            <td>
+					<table align="center" border="0" cellpadding="0" cellspacing="0" width="600" height="48" >
+	                    <tbody>
+	                    	<tr>
+	                        <td width="100" align="center" style="border-right:1px solid #ddd;">'. get_option("blogname") .'</td>
+	                        <td width="300" style="padding-left:20px;"><strong>您有一条来自 <a href="'.home_url().'" target="_blank" style="color:#6ec3c8;text-decoration:none;">' . get_option("blogname") . '</a> 的留言回复！</strong></td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+	          </tr>
+	          <tr>
+	            <td  style="padding:15px;"><p><strong>' . trim(get_comment($parent_id)->comment_author) . '</strong> 同学, 您好!</span>
+	            	<p>您在《' . get_the_title($comment->comment_post_ID) . '》的留言为:</p><p style="border-left:3px solid #ddd;padding-left:1rem;color:#999;">' . trim(get_comment($parent_id)->comment_content) . '</p>
+	            	<p>' . trim($comment->comment_author) . ' 给您的回复:</p><p style="border-left:3px solid #ddd;padding-left:1rem;color:#999;">' . trim($comment->comment_content) . '</p>
+			        <center><a href="' . htmlspecialchars(get_comment_link($parent_id)) . '" target="_blank" style="background-color:#6ec3c8; border-radius:10px; display:inline-block; color:#fff; padding:15px 20px 15px 20px; text-decoration:none;margin-top:20px; margin-bottom:10px;">点击查看完整内容</a></center>
+					<center><p style="font-size:0.8rem; color:#999;">(此邮件由系统自动发出，请勿直接回复)</p></center>
+				</td>
+	          </tr>
+	          <tr>
+	            <td align="center" valign="center" height="38" style="font-size:0.8rem; color:#999;">Copyright © '.get_option("blogname").'</td>
+	          </tr>
+			  </tbody>
+		</table>';
     $from = "From: \"" . get_option('blogname') . "\" <$wp_email>";
     $headers = "$from\nContent-Type: text/html; charset=" . get_option('blog_charset') . "\n";
     wp_mail( $to, $subject, $message, $headers );
   }
 }
 add_action('comment_post', 'comment_mail_notify');
+
+/*
+ * WordPress无插件使用SMTP发送邮件并修改发件人名称
+ */
+function mail_smtp( $phpmailer ) {
+	$phpmailer->IsSMTP();
+	$phpmailer->SMTPAuth = true; //启用SMTPAuth服务
+	$phpmailer->Port = 465; //MTP邮件发送端口，这个和下面的对应，如果这里填写25，则下面为空白
+	$phpmailer->SMTPSecure ="ssl"; //是否验证 ssl，这个和上面的对应，如果不填写，则上面的端口须为25
+	$phpmailer->Host = "smtp.mxhichina.com"; //邮箱的SMTP服务器地址，如果是QQ的则为：smtp.exmail.qq.com
+	$phpmailer->Username = "service@skillcat.me"; //你的邮箱地址
+	$phpmailer->Password ="skillcat921..0"; //你的邮箱授权密码（有的是登录密码）
+}
+add_action('phpmailer_init', 'mail_smtp');
+//下面这个很重要，需跟上面smtp邮箱一致才行
+function ashuwp_wp_mail_from( $original_email_address ) {
+	return 'service@skillcat.me';
+}
+add_filter( 'wp_mail_from', 'ashuwp_wp_mail_from' );
+//修改WordPress发送邮件的发件人
+function new_from_name($email){
+	$wp_from_name = get_option('blogname');
+	return $wp_from_name;
+}
+add_filter('wp_mail_from_name', 'new_from_name');
 
 /*
  * 引用方糖气球评论微信推送

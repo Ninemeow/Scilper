@@ -16,8 +16,8 @@ get_header();
     <!-- 跳动的文字 -->
  <script>
     // JavaScript Document
-window.onload=function(){  
-var changelt = function(r) {
+window.onload=function(){
+	var changelt = function(r) {
 		function t() {
 			return b[Math.floor(Math.random() * b.length)]
 		}
@@ -55,12 +55,13 @@ var changelt = function(r) {
 			};
 		i()
 	};
-changelt(document.getElementById('changelt'));};
-if ('addEventListener' in document) {
+	changelt(document.getElementById('changelt'));
+};
+/*if ('addEventListener' in document) {
 	document.addEventListener('DOMContentLoaded', function() {
 		FastClick.attach(document.body);
 	}, false);
-}
+}*/
     
     </script>
 		<article <?php post_class("post-item"); ?>>

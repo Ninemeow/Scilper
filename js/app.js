@@ -1,8 +1,10 @@
 /*
- * Siren application js
- * @author Louie
+ * Original Theme Application JS
+ * Silper application js
+ * @original author Louie
  * @url http://i94.me
- * @date 2018.07
+ * @update Ninew
+ * @date 2019.03
  */
 
 // baguetteBox Libs
@@ -577,8 +579,7 @@ var home = location.href,
 				createButterbar: function(message) {
 					var t = this;
 					t.clearButterbar();
-					jQuery("body").append('<div class="butterBar butterBar--center"><p class="butterBar-message">' + message +
-						'</p></div>');
+					jQuery("body").append('<div class="butterBar butterBar--center"><p class="butterBar-message">' + message + '</p></div>');
 					setTimeout("jQuery('.butterBar').remove()", 3000);
 				}
 			};
@@ -651,13 +652,12 @@ var home = location.href,
 
 		// 返回顶部
 		GT: function() {
-			var offset = 100,
+			var offset = 200,
 				offset_opacity = 1200,
 				scroll_top_duration = 700,
 				$back_to_top = $('.cd-top');
 			$(window).scroll(function() {
-				($(this).scrollTop() > offset) ? $back_to_top.addClass('cd-is-visible'): $back_to_top.removeClass(
-					'cd-is-visible cd-fade-out');
+				($(this).scrollTop() > offset) ? $back_to_top.addClass('cd-is-visible'): $back_to_top.removeClass('cd-is-visible cd-fade-out');
 				if($(this).scrollTop() > offset_opacity) {
 					$back_to_top.addClass('cd-fade-out');
 				}
@@ -710,7 +710,7 @@ var home = location.href,
 	}
 
 // Executive function
-jQuery(function($) {
+$(function() {
 
 	Siren.AH(); // 自适应窗口高度
 	Siren.PE(); // 进程
@@ -728,7 +728,7 @@ jQuery(function($) {
 	Siren.LV(); // 加载视频
 
 	if(Poi.pjax) {
-		$(document).pjax("a[target!=_top][data-pjax!='0'][class!='download']", '#page', {
+		jQuery(document).pjax("a[target!=_top][data-pjax!='0'][class!='download']", '#page', {
 			fragment: '#page',
 			timeout: 8000,
 		}).on('pjax:send', function() {
@@ -754,7 +754,10 @@ jQuery(function($) {
 				} else {
 					$.getScript("//static.duoshuo.com/embed.js");
 				}
-			}
+			};
+			document.querySelectorAll('pre code').forEach((block) => {
+			    hljs.highlightBlock(block);
+			}); // 解决highlight.js回调函数问题
 		}).on('submit', '.search-form,.s-search', function(event) {
 			event.preventDefault();
 			$.pjax.submit(event, '#page', {
@@ -800,7 +803,7 @@ jQuery(function($) {
 	});
 	
 	// Animate
-	jQuery.fn.extend({
+	$.fn.extend({
 	    animateCss: function (animationName, callback) {
 	        var animationEnd = (function (el) {
 	            var animations = {
@@ -809,20 +812,17 @@ jQuery(function($) {
 	                MozAnimation: 'mozAnimationEnd',
 	                WebkitAnimation: 'webkitAnimationEnd',
 	            };
-	
 	            for (var t in animations) {
 	                if (el.style[t] !== undefined) {
 	                    return animations[t];
 	                }
 	            }
 	        })(document.createElement('div'));
-	
 	        this.addClass('animated ' + animationName).one(animationEnd, function () {
 	            $(this).removeClass('animated ' + animationName);
 	
 	            if (typeof callback === 'function') callback();
 	        });
-	
 	        return this;
 	    }
 	});
@@ -845,22 +845,21 @@ if((isWebkit || isOpera || isIe) && document.getElementById && window.addEventLi
 	window.addEventListener('hashchange', function() {
 		var id = location.hash.substring(1),
 			element;
-
 		if(!(/^[A-z0-9_-]+$/.test(id))) {
 			return;
 		}
-
 		element = document.getElementById(id);
-
 		if(element) {
 			if(!(/^(?:a|select|input|button|textarea)$/i.test(element.tagName))) {
 				element.tabIndex = -1;
 			}
-
 			element.focus();
 		}
 	}, false);
 };
+
+//调用highlight
+hljs.initHighlightingOnLoad();
 
 //表情js	
 function emojiInit() {

@@ -26,7 +26,7 @@
                     <?php wp_list_comments('type=comment&callback=akina_comment_format&max_depth=10000'); ?>
                 </ul>
                 <nav id="comments-navi">
-                    <?php paginate_comments_links('prev_text=<&next_text=>'); ?>
+                    <?php paginate_comments_links('prev_text=« Older&next_text=Newer »'); ?>
                 </nav>
             <?php else: ?>
                 <?php if (comments_open()): ?>
@@ -45,8 +45,7 @@
                     <?php else: ?>
                         <form action="<?php echo get_option('siteurl'); ?>/wp-comments-post.php" method="post" id="commentform">
                             <?php if ($user_ID): ?>
-                                <p class="loginwords"><?php print '登录者：'; ?> <a href="<?php echo get_option('siteurl'); ?>/wp-admin/profile.php"><?php echo $user_identity; ?></a>&nbsp;&nbsp;
-																<a href="<?php echo wp_logout_url(get_permalink()); ?>" title="退出"><?php print '[ 退出 ]'; ?></a></p>
+                                <p class="loginwords"><?php print '登录者：'; ?> <a href="<?php echo get_option('siteurl'); ?>/wp-admin/profile.php"><?php echo $user_identity; ?></a>&nbsp;&nbsp;<a href="<?php echo wp_logout_url(get_permalink()); ?>" title="退出"><?php print '[ 退出 ]'; ?></a></p>
                             <?php else: ?>
                                 <?php if ($comment_author): ?>
                                     <div class="author-updown"><?php printf(__('欢迎回来 ,  %s '), $comment_author); ?>
@@ -94,8 +93,4 @@
         </div>
     </section>
 <?php endif; ?>
-
-        
-
-				
-
+	
