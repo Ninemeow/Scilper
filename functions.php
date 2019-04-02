@@ -842,31 +842,6 @@ function comment_mail_notify($comment_id){
 add_action('comment_post', 'comment_mail_notify');
 
 /*
- * WordPress无插件使用SMTP发送邮件并修改发件人名称
- */
-function mail_smtp( $phpmailer ) {
-	$phpmailer->IsSMTP();
-	$phpmailer->SMTPAuth = true; //启用SMTPAuth服务
-	$phpmailer->Port = 465; //MTP邮件发送端口，这个和下面的对应，如果这里填写25，则下面为空白
-	$phpmailer->SMTPSecure ="ssl"; //是否验证 ssl，这个和上面的对应，如果不填写，则上面的端口须为25
-	$phpmailer->Host = "smtp.mxhichina.com"; //邮箱的SMTP服务器地址，如果是QQ的则为：smtp.exmail.qq.com
-	$phpmailer->Username = "service@skillcat.me"; //你的邮箱地址
-	$phpmailer->Password ="skillcat921..0"; //你的邮箱授权密码（有的是登录密码）
-}
-add_action('phpmailer_init', 'mail_smtp');
-//下面这个很重要，需跟上面smtp邮箱一致才行
-function ashuwp_wp_mail_from( $original_email_address ) {
-	return 'service@skillcat.me';
-}
-add_filter( 'wp_mail_from', 'ashuwp_wp_mail_from' );
-//修改WordPress发送邮件的发件人
-function new_from_name($email){
-	$wp_from_name = get_option('blogname');
-	return $wp_from_name;
-}
-add_filter('wp_mail_from_name', 'new_from_name');
-
-/*
  * 引用方糖气球评论微信推送
  */
 function wpso_wechet_comment_notify($comment_id) {
