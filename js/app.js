@@ -619,35 +619,42 @@ var home = location.href,
 			POWERMODE.shake = false; // turn off shake
 			document.body.addEventListener('input', POWERMODE)
 		},
-
-		// 文章页面导航跟随文章滑动
+		
 		AN: function() {
-			if($('div').hasClass('post_nav')) {
-				var $mulu = $('.post_nav'),
-					offset = $mulu.offset();
-				$(window).scroll(function() {
-					if($(this).scrollTop() > offset.top) {
-						var mulu_left = $mulu.offset().left,
-							mulu_w = $mulu.outerWidth();
-						$mulu.addClass('moving').css({
-							'left': mulu_left + 184 - mulu_w + 'px'
-						});
-					} else {
-						$mulu.removeClass('moving').css({
-							'left': ''
-						});
-					};
-				});
-				// 添加动画效果 
-				$('.tooltip').click(function(e) {
-					e.preventDefault();
-					$('html,body').animate({
-						scrollTop: $(this.hash).offset().top
-					});
-				});
-			} else {
-				return false;
+			//定义tocbot
+			function tableOfContentScroll(flag) {
+			    if (document.body.clientWidth <= 1200) {
+			        return;
+			    } else if ($("div").hasClass("have-toc") == false && $("div").hasClass("has-toc") == false) {
+			        $(".toc-container").remove();
+			    } else {
+			        $(document).ready(function () {
+			            if ($("div").hasClass("toc")) {
+			                $(".toc-container").css("height", $(".site-content").outerHeight());
+			                setTimeout(function () {
+			                    $(".toc-container").css("height", $(".site-content").outerHeight());
+			                }, 1000);
+			                setTimeout(function () {
+			                    $(".toc-container").css("height", $(".site-content").outerHeight());
+			                }, 6000);
+			            }
+			        });
+			        if (flag) {
+			            var id = 1;
+			            $(".entry-content , .links").children("h1,h2,h3,h4,h5").each(function () {
+			                var hyphenated = "toc-head-" + id;
+			                $(this).attr('id', hyphenated);
+			                id++;
+			            });
+			            tocbot.init({
+			                tocSelector: '.toc',
+			                contentSelector: ['.entry-content', '.links'],
+			                headingSelector: 'h1, h2, h3, h4, h5',
+			            });
+			        }
+			    }
 			}
+			tableOfContentScroll(flag = true);
 		},
 
 		// 返回顶部
@@ -715,7 +722,7 @@ $(function() {
 	Siren.AH(); // 自适应窗口高度
 	Siren.PE(); // 进程
 	Siren.NH(); // 显示&隐藏导航栏
-	Siren.AN(); // 文章导航
+	Siren.AN(); //文章导航
 	Siren.GT(); // 返回顶部
 	Siren.HIT(); // 添加一言
 	Siren.GRT(); // Ajax获取Gravatar头像
@@ -901,7 +908,7 @@ emojiInit();
 //复制文章内容弹出友好提示
 function add_copyright() {
 	document.body.addEventListener("copy", function(e) {
-		if(window.getSelection().toString().length > 30) {
+		if(window.getSelection().toString().length > 30 && scilper_option.clipboardCopyright) {
 			setClipboardText(e);
 		} else {
 			addComment.createButterbar("复制成功！<br>Copy to the clipboard success! ", 800);

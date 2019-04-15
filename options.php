@@ -698,7 +698,7 @@ function optionsframework_options() {
 		'type' => 'heading' );
 
 	$options[] = array(
-		'name' => __('开启PJAX局部刷新', 'options_framework_theme'),
+		'name' => __('开启PJAX局部刷新（建议开启）', 'options_framework_theme'),
 		'desc' => __('原理与Ajax相同', 'options_framework_theme'),
 		'id' => 'poi_pjax',
 		'std' => '0',
@@ -709,7 +709,7 @@ function optionsframework_options() {
 		'desc' => __('填写分类ID，多个用英文“ , ”分开', 'options_framework_theme'),
 		'id' => 'classify_display',
 		'std' => '',
-		'type' => 'text');	
+		'type' => 'text');
 		
 	$options[] = array(
 		'name' => __('图片展示分类', 'options_framework_theme'),
@@ -724,28 +724,49 @@ function optionsframework_options() {
 		'id' => 'mail_user_name',
 		'std' => 'poi',
 		'type' => 'text');
-
+	
 	$options[] = array(
-		'name' => __('允许私密评论', 'options_framework_theme'),
-		'desc' => __('允许用户设置自己的评论对其他人不可见', 'options_framework_theme'),
-		'id' => 'open_private_message',
+		'name' => __('开启SMTP发件功能', 'options_framework_theme'),
+		'desc' => __('默认关闭，勾选开启。（使用虚拟主机的同学，请先确定主机控制台中 PHP.ini 设置fsockopen函数是否启用）', 'options_framework_theme'),
+		'id' => 'open_smtp',
 		'std' => '0',
 		'type' => 'checkbox');
-
+		
 	$options[] = array(
-		'name' => __('评论UA信息', 'options_framework_theme'),
-		'desc' => __('勾选开启，用户的浏览器，操作系统信息', 'options_framework_theme'),
-		'id' => 'open_useragent',
-		'std' => '0',
-		'type' => 'checkbox');
-
-	$options[] = array(
-		'name' => __('开启方糖气球评论微信推送', 'options_framework_theme'),
-		'desc' => __('填写在方糖气球注册的SCKEY，此功能借助微信方糖公众号推送评论通知，<a href="http://sc.ftqq.com/3.version" target="_blank">点击查看详情<a/>', 'options_framework_theme'),
-		'id' => 'wpso_wenotify_key',
-		'std' => '',
+		'name' => __('【SMTP设置】邮件发送端口', 'options_framework_theme'),
+		'desc' => __('SMTP邮件发送端口，这个和下面的对应，如果这里填写25，则下面为空白', 'options_framework_theme'),
+		'id' => 'open_smtp_port',
+		'std' => '465',
 		'type' => 'text');
 		
+	$options[] = array(
+		'name' => __('【SMTP设置】验证 ssl或tls连接', 'options_framework_theme'),
+		'desc' => __('是否验证 ssl，这个和上面的对应，如果不填写，则上面的端口须为25（推荐使用465等ssl端口，25端口可能会出问题）', 'options_framework_theme'),
+		'id' => 'open_smtp_smtpsecure',
+		'std' => 'ssl',
+		'type' => 'text');
+		
+	$options[] = array(
+		'name' => __('【SMTP设置】邮箱的SMTP服务器地址', 'options_framework_theme'),
+		'desc' => __('邮箱的SMTP服务器地址，如果是QQ的则为：smtp.exmail.qq.com，在邮箱设置或者帮助中心中可以找到', 'options_framework_theme'),
+		'id' => 'open_smtp_host',
+		'std' => 'smtp.exmail.qq.com',
+		'type' => 'text');
+		
+	$options[] = array(
+		'name' => __('【SMTP设置】发件邮箱地址', 'options_framework_theme'),
+		'desc' => __('你的邮箱地址，例：skillcat@126.com', 'options_framework_theme'),
+		'id' => 'open_smtp_username',
+		'std' => 'username@gmail.com',
+		'type' => 'text');
+		
+	$options[] = array(
+		'name' => __('【SMTP设置】发件邮箱授权密码', 'options_framework_theme'),
+		'desc' => __('你的邮箱授权密码（有的是登录密码）', 'options_framework_theme'),
+		'id' => 'open_smtp_password',
+		'std' => '***',
+		'type' => 'text');
+			
 	$options[] = array(
 		'name' => __('开启多说插件支持', 'options_framework_theme'),
 		'desc' => __('如果使用多说插件，请勾选此项', 'options_framework_theme'),
@@ -755,7 +776,7 @@ function optionsframework_options() {
 
 	$options[] = array(
 		'name' => __('开启Prism代码高亮支持', 'options_framework_theme'),
-		'desc' => __('仅支持Prism.js的高亮插件，如果你用使用该插件且开启了Pjax，请勾选此项，!这不是插件功能，只是帮助插件JS文件进入Pjax重载', 'options_framework_theme'),
+		'desc' => __('仅支持Prism.js的高亮插件，如果你用使用该插件且开启了Pjax，请勾选此项，【注意!这不是插件功能】，只是帮助插件JS文件进入Pjax重载', 'options_framework_theme'),
 		'id' => 'open_prism_codelamp',
 		'std' => '0',
 		'type' => 'checkbox');	
@@ -772,7 +793,41 @@ function optionsframework_options() {
 		'desc' => __('该地址为空则使用默认图片', 'options_framework_theme'),
 		'id' => 'login_bg',
 		'type' => 'upload');
+	
+	
+	//杂项
+	$options[] = array(
+		'name' => __('杂项', 'options_framework_theme'),
+		'type' => 'heading' );
 		
+	$options[] = array(
+		'name' => __('开启方糖气球评论微信推送', 'options_framework_theme'),
+		'desc' => __('填写在方糖气球注册的SCKEY，此功能借助微信方糖公众号推送评论通知，<a href="http://sc.ftqq.com/3.version" target="_top">点击查看详情<a/>', 'options_framework_theme'),
+		'id' => 'wpso_wenotify_key',
+		'std' => '',
+		'type' => 'text');
+	
+	$options[] = array(
+		'name' => __('开启剪贴板版权标识', 'options_framework_theme'),
+		'desc' => __('复制超过30个字节时自动向剪贴板添加版权标识，默认开启', 'options_framework_theme'),
+		'id' => 'clipboard_copyright',
+		'std' => '1',
+		'type' => 'checkbox');
+
+	$options[] = array(
+		'name' => __('允许私密评论', 'options_framework_theme'),
+		'desc' => __('允许用户设置自己的评论对其他人不可见', 'options_framework_theme'),
+		'id' => 'open_private_message',
+		'std' => '0',
+		'type' => 'checkbox');
+
+	$options[] = array(
+		'name' => __('评论UA信息', 'options_framework_theme'),
+		'desc' => __('勾选开启，用户的浏览器，操作系统信息', 'options_framework_theme'),
+		'id' => 'open_useragent',
+		'std' => '0',
+		'type' => 'checkbox');
+	
 	$options[] = array(
 		'name' => __('鼠标点击特效❤', 'options_framework_theme'),
 		'desc' => __('默认关闭，勾选开启', 'options_framework_theme'),

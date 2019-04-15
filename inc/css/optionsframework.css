@@ -52,50 +52,58 @@ a#options-group-1-tab:before {
 	font-family: "dashicons";
     content: "\f111";
 	float: left;
+    transform: translate(-2px,2px);
 }
 
 a#options-group-2-tab:before {
     font-family: "dashicons";
     content: "\f102";
     float: left;
+    transform: translate(-2px,2px);
 }
 
 a#options-group-3-tab:before {
     font-family: "dashicons";
     content: "\f123";
     float: left;
+    transform: translate(-2px,2px);
 }
 
 a#options-group-4-tab:before {
     font-family: "dashicons";
     content: "\f487";
     float: left;
+    transform: translate(-2px,2px);
 }
 
 a#options-group-5-tab:before {
     font-family: "dashicons";
     content: "\f227";
     float: left;
+    transform: translate(-2px,2px);
 }
 
 a#options-group-6-tab:before {
     font-family: "dashicons";
     content: "\f105";
     float: left;
-}
-
-/*前台登陆*/
-a#options-group-7-tab:before {
-    font-family: "dashicons";
-    content: "\f110";
-    float: left;
+    transform: translate(-2px,2px);
 }
 
 /*SMTP邮件服务器*/
+a#options-group-7-tab:before {
+    font-family: "dashicons";
+    content: "\f108";
+    float: left;
+    transform: translate(-2px,2px);
+}
+
+/*前台登陆*/
 a#options-group-8-tab:before {
     font-family: "dashicons";
-    content: "\f130";
+    content: "\f110";
     float: left;
+    transform: translate(-2px,2px);
 }
 
 

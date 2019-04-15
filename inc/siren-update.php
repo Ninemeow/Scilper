@@ -807,6 +807,11 @@ function font_end_js_control() { ?>
 	scilper_option.site_name = "<?php echo get_option('blogname'); ?>";
 	scilper_option.author_name = "<?php echo the_author_nickname(); ?>";
 	scilper_option.admin_des = "<?php echo akina_option('admin_des', ''); ?>";
+	<?php if(akina_option('clipboard_copyright') == 0){ ?>
+	scilper_option.clipboardCopyright = false;
+	<?php }else {?>
+	scilper_option.clipboardCopyright = true;
+	<?php } ?>
 /*End of Initial Variables*/
 </script>
 <?php }

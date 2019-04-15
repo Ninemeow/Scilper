@@ -113,7 +113,7 @@
 	</script>
 	<!--[if lt IE 8]>
 		<div class="old-browser">
-			<a href="http://browsehappy.com/">
+			<a href="https://browsehappy.com/" target="_blank">
 				<img src="<?php bloginfo('template_url'); ?>/images/older-browsers.png" alt="您的浏览器版本过低，为了保障您的访问安全，以及获得更友好的用户体验，建议您升级您的浏览器到最新版本。">
 			</a>
 		</div>

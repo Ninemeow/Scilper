@@ -4,10 +4,10 @@
  *
  * @link https://developer.wordpress.org/themes/basics/theme-functions/
  *
- * @package Akina
+ * @package Scilper
  */
  
-define( 'SIREN_VERSION', '2.0.3' );
+define( 'SIREN_VERSION', '2.0.4' );
 
 if ( !function_exists( 'akina_setup' ) ) :
 /**
@@ -266,18 +266,17 @@ add_action( 'widgets_init', 'akina_widgets_init' );
  */
 function akina_scripts() {
 	wp_enqueue_style( 'siren', get_stylesheet_uri(), array(), SIREN_VERSION );
-//	wp_register_script( 'jq', get_template_directory_uri() . '/js/jquery.min.js', array(), SIREN_VERSION );
 	wp_enqueue_script( 'jq', get_template_directory_uri() . '/js/jquery.min.js', array(), SIREN_VERSION, true );
 	wp_enqueue_script( 'pjax-libs', get_template_directory_uri() . '/js/jquery.pjax.js', array(), SIREN_VERSION, true );
 	wp_enqueue_script( 'input', get_template_directory_uri() . '/js/input.min.js', array(), SIREN_VERSION, true );
     wp_enqueue_script( 'app', get_template_directory_uri() . '/js/app.js', array(), SIREN_VERSION, true );
+    wp_enqueue_script( 'tocbot', get_template_directory_uri() . '/js/tocbot.min.js' );
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
 	if ( akina_option('scilper_hitokoto') != '0' ) {
 		wp_enqueue_style( 'animateCSS', 'https://cdn.jsdelivr.net/gh/daneden/animate.css/animate.min.css', array(), SIREN_VERSION ); 
 	}
-//	wp_enqueue_script('jq');
 
 	// 20161116 @Louie
 	$mv_live = akina_option('focus_mvlive') ? 'open' : 'close';
@@ -714,50 +713,12 @@ function scilper_author_link_request( $query_vars ) {
 }
 add_filter( 'request', 'scilper_author_link_request' );
 
-/*
- *	文章页面导航
- */
-if ( akina_option('post_nav') == 'yes') {
- 	function article_index($content) {
-		$matches = array();
-		$ul_li = '';
-		//匹配出 h2、h3 标题
-		$rh = "/<h[23]>(.*)<\/h[23]>/im";
-		$h2_num = 0;
-		$h3_num = 0;
-		//判断是否是文章页
-		if(is_single() || !is_tag()){
-			if(preg_match_all($rh, $content, $matches)) {
-				// 找到匹配的结果
-				foreach($matches[1] as $num => $title) {
-					$hx = substr($matches[0][$num], 0, 3);      //前缀，判断是 h2 还是 h3
-					$start = stripos($content, $matches[0][$num]);  //匹配每个标题字符串的起始位置
-					$end = strlen($matches[0][$num]);       //匹配每个标题字符串的结束位置
-					if($hx == "<h2"){
-						$h2_num += 1; //记录 h2 的序列，此效果请查看百度百科中的序号，如 1.1、1.2 中的第一位数
-						$h3_num = 0;
-						// 文章标题添加 id，便于目录导航的点击定位
-						$content = substr_replace($content, '<h2 id="h2-'.$num.'">'.$title.'</h2>',$start,$end);
-						$title = preg_replace('/#.*?#/', "", $title); //将 h2 里面的 a 链接或者其他标签去除，留下文字
-						$ul_li .= '<li class="h2_nav"><a href="#h2-'.$num.'" class="tooltip" title="'.$title.'">'.$title."</a></li>\n";
-					}else if($hx == "<h3"){
-						$h3_num += 1; //记录 h3 的序列，此熬过请查看百度百科中的序号，如 1.1、1.2 中的第二位数
-						$content = substr_replace($content, '<h3 id="h3-'.$num.'">'.$title.'</h3>',$start,$end);
-						$title = preg_replace('/#.*?#/', "", $title); //将 h3 里面的 a 链接或者其他标签去除，留下文字
-						$ul_li .= '<li class="h3_nav"><a href="#h3-'.$num.'" class="tooltip" title="'.$title.'">'.$title."</a></li>\n";
-					}   
-				 }
-		 	}
-			// 将目录拼接到文章
-			$content =  $content . "<div class=\"post_nav\"><ul class=\"post_nav_content\">\n" . $ul_li . "</ul></div>\n";
-			return $content;
-		}else if(is_home()){
-			return $content;
-		}
-	}
-	add_filter( "the_content", "article_index" );
+//TOC 支持
+function toc_support($content) {
+    $content =  str_replace('[toc]', '<div class="has-toc have-toc"></div>', $content); // TOC 支持
+    return $content;
 }
-
+add_filter('the_content', 'toc_support');
 
 /*
  * 图片自动添加alt属性
@@ -840,6 +801,33 @@ function comment_mail_notify($comment_id){
   }
 }
 add_action('comment_post', 'comment_mail_notify');
+
+/*
+ * WordPress无插件使用SMTP发送邮件并修改发件人名称
+ */
+if ( akina_option('open_smtp') != '0' ) {
+	function mail_smtp( $phpmailer ) {
+		$phpmailer->IsSMTP();
+		$phpmailer->SMTPAuth = true; //启用SMTPAuth服务
+		$phpmailer->Port = akina_option('open_smtp_port'); //SMTP邮件发送端口，这个和下面的对应，如果这里填写25，则下面为空白
+		$phpmailer->SMTPSecure = akina_option('open_smtp_smtpsecure'); //是否验证 ssl，这个和上面的对应，如果不填写，则上面的端口须为25
+		$phpmailer->Host = akina_option('open_smtp_host'); //邮箱的SMTP服务器地址，如果是QQ的则为：smtp.exmail.qq.com
+		$phpmailer->Username = akina_option('open_smtp_username'); //你的邮箱地址
+		$phpmailer->Password = akina_option('open_smtp_password'); //你的邮箱授权密码（有的是登录密码）
+	}
+	add_action('phpmailer_init', 'mail_smtp');
+	//下面这个很重要，需跟上面smtp邮箱一致才行
+	function ashuwp_wp_mail_from( $original_email_address ) {
+		return akina_option('open_smtp_username');
+	}
+	add_filter( 'wp_mail_from', 'ashuwp_wp_mail_from' );
+	//修改WordPress发送邮件的发件人
+	function new_from_name($email){
+		$wp_from_name = get_option('blogname');
+		return $wp_from_name;
+	}
+	add_filter('wp_mail_from_name', 'new_from_name');
+}
 
 /*
  * 引用方糖气球评论微信推送
